@@ -5,7 +5,7 @@ using UnityEngine;
 // On trigger enter, set player GameObject to hold onto and hang from this hanger.
 public class Hanger : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D coll) {
-		// If (coll) has an attached PlayerController component...
+		// If (coll) has an attached PlayerManager component...
 		PlayerManager collPlayer = coll.gameObject.GetComponent<PlayerManager>();
 		if (collPlayer != null) {
 			// ...player grabs and holds onto hanger
@@ -17,7 +17,7 @@ public class Hanger : MonoBehaviour {
 	}
 
 	void OnTriggerExit2D(Collider2D coll) {
-        // If (coll) has an attached PlayerController component...
+        // If (coll) has an attached PlayerManager component...
         PlayerManager collPlayer = coll.gameObject.GetComponent<PlayerManager>();
 		if (collPlayer != null) {
             // ...player lets go of and detaches from hanger

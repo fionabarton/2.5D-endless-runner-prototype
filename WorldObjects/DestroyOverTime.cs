@@ -20,7 +20,6 @@ public class DestroyOverTime : MonoBehaviour {
         StartCoroutine("FixedUpdateCoroutine");
     }
 
-    //
     public IEnumerator FixedUpdateCoroutine() {
         // If time to destroy has passed...
         if (timeDone <= Time.time) {

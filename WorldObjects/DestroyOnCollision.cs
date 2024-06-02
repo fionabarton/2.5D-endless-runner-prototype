@@ -8,7 +8,7 @@ public class DestroyOnCollision : MonoBehaviour {
     public string tagName = "Player";
 
     private void OnTriggerEnter(Collider other) {
-        // If tag of 'other' GameObject matches 'tagName'...
+        // If tag of (other) GameObject matches (tagName)...
         if (other.gameObject.tag == tagName) {
             // ...destroy this GameObject
             Destroy(gameObject);

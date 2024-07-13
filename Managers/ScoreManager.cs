@@ -25,4 +25,10 @@ public class ScoreManager : MonoBehaviour {
         score += 1;
         scoreText.text = "Score: " + score;
     }
+
+    // Reset the user's score to 0
+    public void ResetScore() {
+        score = 0;
+        scoreText.text = "Score: " + score;
+    }
 }

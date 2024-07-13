@@ -38,6 +38,9 @@ public class PlayerManager : MonoBehaviour {
     // Tracks whether sprite is facing left or right
     public bool                 facingRight = true;
 
+    // Tracks whether the player is shielded
+    public bool                 isShielded = false;
+
     // Location to respawn player
     public Vector3              respawnPos;
 
@@ -416,10 +419,23 @@ public class PlayerManager : MonoBehaviour {
     // Activate the player's shield after colliding with a shield item
     public void ActivateShield() {
         shield.SetActive(true);
+        isShielded = true;
     }
 
     // Deactivate the player's shield after colliding with a red obstacle
     public void DeactivateShield() {
         shield.SetActive(false);
+        isShielded = false;
+    }
+
+    // End the game and reset all changed values to their default settings
+    public void GameOver() {
+        if (!isShielded) {
+            // Reset score
+            ScoreManager.S.ResetScore();
+
+            // Reset shield
+            DeactivateShield();
+        }
     }
 }

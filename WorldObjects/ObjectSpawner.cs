@@ -58,14 +58,25 @@ public class ObjectSpawner : MonoBehaviour {
         float randomVal = Random.value;
 
         // Based on random value, select an object to instantiate
-        if (randomVal >= 0 && randomVal <= 0.25f) {
+        //if (randomVal >= 0 && randomVal <= 0.25f) {
+        //    InstantiateHorizontalHighObstacle();
+        //} else if (randomVal > 0.25f && randomVal <= 0.5f) {
+        //    InstantiateHorizontalLowObstacle();
+        //} else if (randomVal > 0.5f && randomVal <= 0.75f) {
+        //    InstantiateRandomVerticalObstacle();
+        //} else if (randomVal > 0.75f && randomVal <= 1.0f) {
+        //    InstantiateCoin();
+        //}
+        if (randomVal >= 0 && randomVal <= 0.2f) {
             InstantiateHorizontalHighObstacle();
-        } else if (randomVal > 0.25f && randomVal <= 0.5f) {
+        } else if (randomVal > 0.2f && randomVal <= 0.4f) {
             InstantiateHorizontalLowObstacle();
-        } else if (randomVal > 0.5f && randomVal <= 0.75f) {
+        } else if (randomVal > 0.4f && randomVal <= 0.6f) {
             InstantiateRandomVerticalObstacle();
-        } else if (randomVal > 0.75f && randomVal <= 1.0f) {
+        } else if (randomVal > 0.6f && randomVal <= 0.8f) {
             InstantiateCoin();
+        } else if (randomVal > 0.8f && randomVal <= 1.0f) {
+            InstantiateShield();
         }
     }
 
@@ -98,8 +109,13 @@ public class ObjectSpawner : MonoBehaviour {
         Instantiate(coinItem, GetRandomItemPosition(), Quaternion.identity * coinItem.transform.localRotation);
     }
 
-   // Get and return a random valid 2D position at which to spawn an item (coin or shield)
-   Vector3 GetRandomItemPosition() {
+    // Instantiate shield item at a randomized position
+    void InstantiateShield() {
+        Instantiate(shieldItem, GetRandomItemPosition(), Quaternion.identity * coinItem.transform.localRotation);
+    }
+
+    // Get and return a random valid 2D position at which to spawn an item (coin or shield)
+    Vector3 GetRandomItemPosition() {
         // Get random values for both x & y-axes
         int x = Random.Range(0, 4);
         int y = Random.Range(0, 4);

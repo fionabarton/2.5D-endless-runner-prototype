@@ -16,7 +16,10 @@ public class PlayerManager : MonoBehaviour {
 
     // List of layers that player can stand on
     public LayerMask            groundLayer;
- 
+
+    // Prevents the game from ending after the player has collided with a single red obstacle
+    public GameObject           shield;
+
     [Header("Set Dynamically")]
     // Current mode of action performed by player
     public ePlayerMode          mode = ePlayerMode.idle;
@@ -408,5 +411,15 @@ public class PlayerManager : MonoBehaviour {
     // Relocate player to starting position
     public void MoveToStartingPosition() {
         transform.position = respawnPos;
+    }
+
+    // Activate the player's shield after colliding with a shield item
+    public void ActivateShield() {
+        shield.SetActive(true);
+    }
+
+    // Deactivate the player's shield after colliding with a red obstacle
+    public void DeactivateShield() {
+        shield.SetActive(false);
     }
 }

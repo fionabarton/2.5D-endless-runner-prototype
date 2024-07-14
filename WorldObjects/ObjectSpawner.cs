@@ -15,6 +15,12 @@ public class ObjectSpawner : MonoBehaviour {
     // Amount of time before object is spawned
     public float                timeDuration = 2f;
 
+    // Speed at which object moves forward
+    public float                moveSpeed = 4;
+
+    // Amount of time before object is spawned
+    public float                spawnSpeed = 4;
+
     // -3, -1.5f, 0, 1.5f, 3
     public List<float>          itemSpawnXPositions = new List<float>();
 
@@ -25,9 +31,18 @@ public class ObjectSpawner : MonoBehaviour {
     // Specific time at which to spawn object
     private float               timeDone;
 
+    // Single instance of this class, which provides global acess from other scripts
+    private static ObjectSpawner _S;
+    public static ObjectSpawner S { get { return _S; } set { _S = value; } }
+
+    void Awake() {
+        // Populate singleton with this instance
+        S = this;
+    }
+
     void OnEnable() {
         // Set time to spawn object
-        timeDone = timeDuration + Time.time;
+        timeDone = spawnSpeed + Time.time;
 
         // Start timer
         StartCoroutine("FixedUpdateCoroutine");
@@ -45,7 +60,7 @@ public class ObjectSpawner : MonoBehaviour {
             InstantiateObject();
 
             // Reset time to spawn object
-            timeDone = timeDuration + Time.time;
+            timeDone = spawnSpeed + Time.time;
         }
 
         // Loop timer by restarting this coroutine
@@ -58,6 +73,14 @@ public class ObjectSpawner : MonoBehaviour {
         float randomVal = Random.value;
 
         // Based on random value, select an object to instantiate
+        if (randomVal >= 0 && randomVal <= 0.3333f) {
+            InstantiateHorizontalHighObstacle();
+        } else if (randomVal > 0.3333f && randomVal <= 0.6666f) {
+            InstantiateCoin();
+        } else if (randomVal > 0.6666f && randomVal <= 1.0f) {
+            InstantiateShield();
+        } 
+
         //if (randomVal >= 0 && randomVal <= 0.25f) {
         //    InstantiateHorizontalHighObstacle();
         //} else if (randomVal > 0.25f && randomVal <= 0.5f) {
@@ -67,17 +90,18 @@ public class ObjectSpawner : MonoBehaviour {
         //} else if (randomVal > 0.75f && randomVal <= 1.0f) {
         //    InstantiateCoin();
         //}
-        if (randomVal >= 0 && randomVal <= 0.2f) {
-            InstantiateHorizontalHighObstacle();
-        } else if (randomVal > 0.2f && randomVal <= 0.4f) {
-            InstantiateHorizontalLowObstacle();
-        } else if (randomVal > 0.4f && randomVal <= 0.6f) {
-            InstantiateRandomVerticalObstacle();
-        } else if (randomVal > 0.6f && randomVal <= 0.8f) {
-            InstantiateCoin();
-        } else if (randomVal > 0.8f && randomVal <= 1.0f) {
-            InstantiateShield();
-        }
+
+        //if (randomVal >= 0 && randomVal <= 0.2f) {
+        //    InstantiateHorizontalHighObstacle();
+        //} else if (randomVal > 0.2f && randomVal <= 0.4f) {
+        //    InstantiateHorizontalLowObstacle();
+        //} else if (randomVal > 0.4f && randomVal <= 0.6f) {
+        //    InstantiateRandomVerticalObstacle();
+        //} else if (randomVal > 0.6f && randomVal <= 0.8f) {
+        //    InstantiateCoin();
+        //} else if (randomVal > 0.8f && randomVal <= 1.0f) {
+        //    InstantiateShield();
+        //}
     }
 
     //

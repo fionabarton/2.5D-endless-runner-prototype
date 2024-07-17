@@ -25,7 +25,7 @@ public class ScoreManager : MonoBehaviour {
         S = this;
     }
 
-    // Reset the user's score to 0
+    // Reset the user's score to default values
     public void ResetScore() {
         score = 0;
         level = 1;
@@ -62,6 +62,9 @@ public class ScoreManager : MonoBehaviour {
         // Increment level and update UI
         level += 1;
         UpdateGUI();
+
+        // Increment object move and spawn speeds
+        ObjectSpawner.S.IncrementSpeed();
 
         // Reset amountToNextLevel 
         amountToNextLevel = 5;

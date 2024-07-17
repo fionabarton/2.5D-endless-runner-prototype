@@ -17,9 +17,13 @@ public class ObjectSpawner : MonoBehaviour {
 
     // Speed at which object moves forward
     public float                moveSpeed = 4;
+    public float                startingMoveSpeed = 4;
+    public float                amountToIncreaseMoveSpeed = 0.5f;
 
     // Amount of time before object is spawned
     public float                spawnSpeed = 4;
+    public float                startingSpawnSpeed = 4;
+    public float                amountToIncreaseSpawnSpeed = 0.5f;
 
     // -3, -1.5f, 0, 1.5f, 3
     public List<float>          itemSpawnXPositions = new List<float>();
@@ -76,10 +80,10 @@ public class ObjectSpawner : MonoBehaviour {
         if (randomVal >= 0 && randomVal <= 0.3333f) {
             InstantiateHorizontalHighObstacle();
         } else if (randomVal > 0.3333f && randomVal <= 0.6666f) {
-            InstantiateCoin();
+            InstantiateCoin(); 
         } else if (randomVal > 0.6666f && randomVal <= 1.0f) {
             InstantiateShield();
-        } 
+        }
 
         //if (randomVal >= 0 && randomVal <= 0.25f) {
         //    InstantiateHorizontalHighObstacle();
@@ -146,5 +150,17 @@ public class ObjectSpawner : MonoBehaviour {
 
         // Return position with random values
         return new Vector3(itemSpawnXPositions[x], itemSpawnYPositions[y], 10);
+    }
+
+    // Increment object move and spawn speeds by an adjustable amount
+    public void IncrementSpeed() {
+        moveSpeed += amountToIncreaseMoveSpeed;
+        spawnSpeed += amountToIncreaseSpawnSpeed;
+    }
+
+    // Reset object move and spawn speeds 
+    public void ResetSpeed() {
+        moveSpeed = startingMoveSpeed;
+        spawnSpeed = startingSpawnSpeed;
     }
 }

@@ -434,6 +434,9 @@ public class PlayerManager : MonoBehaviour {
             // Reset score
             ScoreManager.S.ResetScore();
 
+            // Reset object spawner speeds
+            ObjectSpawner.S.ResetSpeed();
+
             // Reset shield
             DeactivateShield();
         }

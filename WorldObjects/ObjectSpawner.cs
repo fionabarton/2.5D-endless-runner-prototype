@@ -53,6 +53,10 @@ public class ObjectSpawner : MonoBehaviour {
     }
 
     private void Start() {
+        // Initialize move & spawn speeds
+        moveSpeed = startingMoveSpeed;
+        spawnSpeed = startingSpawnSpeed;
+
         //
         InstantiateObject();
     }
@@ -76,15 +80,17 @@ public class ObjectSpawner : MonoBehaviour {
         // Get random value
         float randomVal = Random.value;
 
+        // 3 slots: (evenly distributed)
         // Based on random value, select an object to instantiate
-        if (randomVal >= 0 && randomVal <= 0.3333f) {
-            InstantiateHorizontalHighObstacle();
-        } else if (randomVal > 0.3333f && randomVal <= 0.6666f) {
-            InstantiateCoin(); 
-        } else if (randomVal > 0.6666f && randomVal <= 1.0f) {
-            InstantiateShield();
-        }
+        //if (randomVal >= 0 && randomVal <= 0.3333f) {
+        //    InstantiateHorizontalHighObstacle();
+        //} else if (randomVal > 0.3333f && randomVal <= 0.6666f) {
+        //    InstantiateCoin(); 
+        //} else if (randomVal > 0.6666f && randomVal <= 1.0f) {
+        //    InstantiateShield();
+        //}
 
+        // 4 slots: (evenly distributed)
         //if (randomVal >= 0 && randomVal <= 0.25f) {
         //    InstantiateHorizontalHighObstacle();
         //} else if (randomVal > 0.25f && randomVal <= 0.5f) {
@@ -95,6 +101,7 @@ public class ObjectSpawner : MonoBehaviour {
         //    InstantiateCoin();
         //}
 
+        // 5 slots: (evenly distributed)
         //if (randomVal >= 0 && randomVal <= 0.2f) {
         //    InstantiateHorizontalHighObstacle();
         //} else if (randomVal > 0.2f && randomVal <= 0.4f) {
@@ -106,6 +113,19 @@ public class ObjectSpawner : MonoBehaviour {
         //} else if (randomVal > 0.8f && randomVal <= 1.0f) {
         //    InstantiateShield();
         //}
+
+        // 5 slots: (individually weighted)
+        if (randomVal >= 0 && randomVal <= 0.2f) {
+            InstantiateHorizontalHighObstacle();
+        } else if (randomVal > 0.2f && randomVal <= 0.4f) {
+            InstantiateHorizontalLowObstacle();
+        } else if (randomVal > 0.4f && randomVal <= 0.6f) {
+            InstantiateRandomVerticalObstacle();
+        } else if (randomVal > 0.6f && randomVal <= 0.9f) {
+            InstantiateCoin();
+        } else if (randomVal > 0.9f && randomVal <= 1.0f) {
+            InstantiateShield();
+        }
     }
 
     //
@@ -155,7 +175,7 @@ public class ObjectSpawner : MonoBehaviour {
     // Increment object move and spawn speeds by an adjustable amount
     public void IncrementSpeed() {
         moveSpeed += amountToIncreaseMoveSpeed;
-        spawnSpeed += amountToIncreaseSpawnSpeed;
+        spawnSpeed -= amountToIncreaseSpawnSpeed;
     }
 
     // Reset object move and spawn speeds 

@@ -35,6 +35,11 @@ public class ObjectSpawner : MonoBehaviour {
     // Specific time at which to spawn object
     private float               timeDone;
 
+    //
+    public int                  previousObjectNdx = -1;
+    public int                  currentObjectNdx = -1;
+
+
     // Single instance of this class, which provides global acess from other scripts
     private static ObjectSpawner _S;
     public static ObjectSpawner S { get { return _S; } set { _S = value; } }
@@ -114,17 +119,53 @@ public class ObjectSpawner : MonoBehaviour {
         //    InstantiateShield();
         //}
 
+        //// 5 slots: (individually weighted)
+        //if (randomVal >= 0 && randomVal <= 0.2f) {
+        //    InstantiateHorizontalHighObstacle();
+        //} else if (randomVal > 0.2f && randomVal <= 0.4f) {
+        //    InstantiateHorizontalLowObstacle();
+        //} else if (randomVal > 0.4f && randomVal <= 0.6f) {
+        //    InstantiateRandomVerticalObstacle();
+        //} else if (randomVal > 0.6f && randomVal <= 0.9f) {
+        //    InstantiateCoin();
+        //} else if (randomVal > 0.9f && randomVal <= 1.0f) {
+        //    InstantiateShield();
+        //}
+
+        // Randomly select an object index
         // 5 slots: (individually weighted)
         if (randomVal >= 0 && randomVal <= 0.2f) {
-            InstantiateHorizontalHighObstacle();
+            currentObjectNdx = 0;
         } else if (randomVal > 0.2f && randomVal <= 0.4f) {
-            InstantiateHorizontalLowObstacle();
+            currentObjectNdx = 1;
         } else if (randomVal > 0.4f && randomVal <= 0.6f) {
-            InstantiateRandomVerticalObstacle();
+            currentObjectNdx = 2;
         } else if (randomVal > 0.6f && randomVal <= 0.9f) {
-            InstantiateCoin();
+            currentObjectNdx = 3;
         } else if (randomVal > 0.9f && randomVal <= 1.0f) {
-            InstantiateShield();
+            currentObjectNdx = 4;
+        }
+
+        // If newly selected object is identical to previously spawned...
+        if (previousObjectNdx == currentObjectNdx) {
+            // ...exit function and try again
+            InstantiateObject();
+        } else {
+            // Instantiate selected object
+            if (currentObjectNdx == 0) {
+                InstantiateHorizontalHighObstacle();
+            } else if (currentObjectNdx == 1) {
+                InstantiateHorizontalLowObstacle();
+            } else if (currentObjectNdx == 2) {
+                InstantiateRandomVerticalObstacle();
+            } else if (currentObjectNdx == 3) {
+                InstantiateCoin();
+            } else if (currentObjectNdx == 4) {
+                InstantiateShield();
+            }
+
+            // Cache previous object index
+            previousObjectNdx = currentObjectNdx;
         }
     }
 

@@ -420,12 +420,18 @@ public class PlayerManager : MonoBehaviour {
     public void ActivateShield() {
         shield.SetActive(true);
         isShielded = true;
+
+        // Display text that shield has been activated
+        AnnouncerManager.S.DisplayShield();
     }
 
     // Deactivate the player's shield after colliding with a red obstacle
     public void DeactivateShield() {
         shield.SetActive(false);
         isShielded = false;
+
+        // Display text of a random interjection
+        AnnouncerManager.S.DisplayRandomInterjection();
     }
 
     // End the game and reset all changed values to their default settings
@@ -439,6 +445,9 @@ public class PlayerManager : MonoBehaviour {
 
             // Reset shield
             DeactivateShield();
+
+            // Display text that the game has ended
+            AnnouncerManager.S.DisplayGameOver();
         }
     }
 }

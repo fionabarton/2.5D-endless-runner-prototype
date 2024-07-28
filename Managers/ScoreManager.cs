@@ -52,8 +52,8 @@ public class ScoreManager : MonoBehaviour {
             // Proceed to next level
             NextLevel();
         } else {
-            // 
-
+            // Display text of a random exclamation
+            AnnouncerManager.S.DisplayRandomExclamation();
         }
     }
 
@@ -68,5 +68,8 @@ public class ScoreManager : MonoBehaviour {
 
         // Reset amountToNextLevel 
         amountToNextLevel = 5;
+
+        // Display text that the player has reached the next level
+        AnnouncerManager.S.DisplayNextLevel();
     }
 }

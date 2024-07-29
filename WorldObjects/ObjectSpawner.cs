@@ -17,13 +17,13 @@ public class ObjectSpawner : MonoBehaviour {
 
     // Speed at which object moves forward
     public float                moveSpeed = 4;
-    public float                startingMoveSpeed = 4;
-    public float                amountToIncreaseMoveSpeed = 0.5f;
+    float                       startingMoveSpeed = 4;
+    float                       amountToIncreaseMoveSpeed = 0.5f;
 
     // Amount of time before object is spawned
-    public float                spawnSpeed = 4;
-    public float                startingSpawnSpeed = 4;
-    public float                amountToIncreaseSpawnSpeed = 0.5f;
+    float                       spawnSpeed = 4;
+    float                       startingSpawnSpeed = 4;
+    float                       amountToIncreaseSpawnSpeed = 0.5f;
 
     // -3, -1.5f, 0, 1.5f, 3
     public List<float>          itemSpawnXPositions = new List<float>();
@@ -33,7 +33,10 @@ public class ObjectSpawner : MonoBehaviour {
 
     [Header("Set Dynamically")]
     // Specific time at which to spawn object
-    private float               timeDone;
+    float                       timeDone;
+
+    // Controls whether objects are currently being spawned
+    public bool                 isSpawning;
 
     //
     public int                  previousObjectNdx = -1;
@@ -82,90 +85,92 @@ public class ObjectSpawner : MonoBehaviour {
     }
 
     void InstantiateObject() {
-        // Get random value
-        float randomVal = Random.value;
+        if (isSpawning) {
+            // Get random value
+            float randomVal = Random.value;
 
-        // 3 slots: (evenly distributed)
-        // Based on random value, select an object to instantiate
-        //if (randomVal >= 0 && randomVal <= 0.3333f) {
-        //    InstantiateHorizontalHighObstacle();
-        //} else if (randomVal > 0.3333f && randomVal <= 0.6666f) {
-        //    InstantiateCoin(); 
-        //} else if (randomVal > 0.6666f && randomVal <= 1.0f) {
-        //    InstantiateShield();
-        //}
+            // 3 slots: (evenly distributed)
+            // Based on random value, select an object to instantiate
+            //if (randomVal >= 0 && randomVal <= 0.3333f) {
+            //    InstantiateHorizontalHighObstacle();
+            //} else if (randomVal > 0.3333f && randomVal <= 0.6666f) {
+            //    InstantiateCoin(); 
+            //} else if (randomVal > 0.6666f && randomVal <= 1.0f) {
+            //    InstantiateShield();
+            //}
 
-        // 4 slots: (evenly distributed)
-        //if (randomVal >= 0 && randomVal <= 0.25f) {
-        //    InstantiateHorizontalHighObstacle();
-        //} else if (randomVal > 0.25f && randomVal <= 0.5f) {
-        //    InstantiateHorizontalLowObstacle();
-        //} else if (randomVal > 0.5f && randomVal <= 0.75f) {
-        //    InstantiateRandomVerticalObstacle();
-        //} else if (randomVal > 0.75f && randomVal <= 1.0f) {
-        //    InstantiateCoin();
-        //}
+            // 4 slots: (evenly distributed)
+            //if (randomVal >= 0 && randomVal <= 0.25f) {
+            //    InstantiateHorizontalHighObstacle();
+            //} else if (randomVal > 0.25f && randomVal <= 0.5f) {
+            //    InstantiateHorizontalLowObstacle();
+            //} else if (randomVal > 0.5f && randomVal <= 0.75f) {
+            //    InstantiateRandomVerticalObstacle();
+            //} else if (randomVal > 0.75f && randomVal <= 1.0f) {
+            //    InstantiateCoin();
+            //}
 
-        // 5 slots: (evenly distributed)
-        //if (randomVal >= 0 && randomVal <= 0.2f) {
-        //    InstantiateHorizontalHighObstacle();
-        //} else if (randomVal > 0.2f && randomVal <= 0.4f) {
-        //    InstantiateHorizontalLowObstacle();
-        //} else if (randomVal > 0.4f && randomVal <= 0.6f) {
-        //    InstantiateRandomVerticalObstacle();
-        //} else if (randomVal > 0.6f && randomVal <= 0.8f) {
-        //    InstantiateCoin();
-        //} else if (randomVal > 0.8f && randomVal <= 1.0f) {
-        //    InstantiateShield();
-        //}
+            // 5 slots: (evenly distributed)
+            //if (randomVal >= 0 && randomVal <= 0.2f) {
+            //    InstantiateHorizontalHighObstacle();
+            //} else if (randomVal > 0.2f && randomVal <= 0.4f) {
+            //    InstantiateHorizontalLowObstacle();
+            //} else if (randomVal > 0.4f && randomVal <= 0.6f) {
+            //    InstantiateRandomVerticalObstacle();
+            //} else if (randomVal > 0.6f && randomVal <= 0.8f) {
+            //    InstantiateCoin();
+            //} else if (randomVal > 0.8f && randomVal <= 1.0f) {
+            //    InstantiateShield();
+            //}
 
-        //// 5 slots: (individually weighted)
-        //if (randomVal >= 0 && randomVal <= 0.2f) {
-        //    InstantiateHorizontalHighObstacle();
-        //} else if (randomVal > 0.2f && randomVal <= 0.4f) {
-        //    InstantiateHorizontalLowObstacle();
-        //} else if (randomVal > 0.4f && randomVal <= 0.6f) {
-        //    InstantiateRandomVerticalObstacle();
-        //} else if (randomVal > 0.6f && randomVal <= 0.9f) {
-        //    InstantiateCoin();
-        //} else if (randomVal > 0.9f && randomVal <= 1.0f) {
-        //    InstantiateShield();
-        //}
+            //// 5 slots: (individually weighted)
+            //if (randomVal >= 0 && randomVal <= 0.2f) {
+            //    InstantiateHorizontalHighObstacle();
+            //} else if (randomVal > 0.2f && randomVal <= 0.4f) {
+            //    InstantiateHorizontalLowObstacle();
+            //} else if (randomVal > 0.4f && randomVal <= 0.6f) {
+            //    InstantiateRandomVerticalObstacle();
+            //} else if (randomVal > 0.6f && randomVal <= 0.9f) {
+            //    InstantiateCoin();
+            //} else if (randomVal > 0.9f && randomVal <= 1.0f) {
+            //    InstantiateShield();
+            //}
 
-        // Randomly select an object index
-        // 5 slots: (individually weighted)
-        if (randomVal >= 0 && randomVal <= 0.2f) {
-            currentObjectNdx = 0;
-        } else if (randomVal > 0.2f && randomVal <= 0.4f) {
-            currentObjectNdx = 1;
-        } else if (randomVal > 0.4f && randomVal <= 0.6f) {
-            currentObjectNdx = 2;
-        } else if (randomVal > 0.6f && randomVal <= 0.9f) {
-            currentObjectNdx = 3;
-        } else if (randomVal > 0.9f && randomVal <= 1.0f) {
-            currentObjectNdx = 4;
-        }
-
-        // If newly selected object is identical to previously spawned...
-        if (previousObjectNdx == currentObjectNdx) {
-            // ...exit function and try again
-            InstantiateObject();
-        } else {
-            // Instantiate selected object
-            if (currentObjectNdx == 0) {
-                InstantiateHorizontalHighObstacle();
-            } else if (currentObjectNdx == 1) {
-                InstantiateHorizontalLowObstacle();
-            } else if (currentObjectNdx == 2) {
-                InstantiateRandomVerticalObstacle();
-            } else if (currentObjectNdx == 3) {
-                InstantiateCoin();
-            } else if (currentObjectNdx == 4) {
-                InstantiateShield();
+            // Randomly select an object index
+            // 5 slots: (individually weighted)
+            if (randomVal >= 0 && randomVal <= 0.2f) {
+                currentObjectNdx = 0;
+            } else if (randomVal > 0.2f && randomVal <= 0.4f) {
+                currentObjectNdx = 1;
+            } else if (randomVal > 0.4f && randomVal <= 0.6f) {
+                currentObjectNdx = 2;
+            } else if (randomVal > 0.6f && randomVal <= 0.9f) {
+                currentObjectNdx = 3;
+            } else if (randomVal > 0.9f && randomVal <= 1.0f) {
+                currentObjectNdx = 4;
             }
 
-            // Cache previous object index
-            previousObjectNdx = currentObjectNdx;
+            // If newly selected object is identical to previously spawned...
+            if (previousObjectNdx == currentObjectNdx) {
+                // ...exit function and try again
+                InstantiateObject();
+            } else {
+                // Instantiate selected object
+                if (currentObjectNdx == 0) {
+                    InstantiateHorizontalHighObstacle();
+                } else if (currentObjectNdx == 1) {
+                    InstantiateHorizontalLowObstacle();
+                } else if (currentObjectNdx == 2) {
+                    InstantiateRandomVerticalObstacle();
+                } else if (currentObjectNdx == 3) {
+                    InstantiateCoin();
+                } else if (currentObjectNdx == 4) {
+                    InstantiateShield();
+                }
+
+                // Cache previous object index
+                previousObjectNdx = currentObjectNdx;
+            }
         }
     }
 

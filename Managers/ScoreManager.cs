@@ -72,4 +72,18 @@ public class ScoreManager : MonoBehaviour {
         // Display text that the player has reached the next level
         AnnouncerManager.S.DisplayNextLevel();
     }
+
+    // On level select, increment game speeds and update GUI
+    public void SetLevel(int levelNdx = 0) {
+        // Increment object move & spawn speeds
+        if(levelNdx != 0) {
+            for (int i = 0; i < levelNdx; i++) {
+                ObjectSpawner.S.IncrementSpeed();
+            }
+        }
+
+        // Set level and update GUI
+        level = levelNdx + 1;
+        UpdateGUI();
+    }
 }

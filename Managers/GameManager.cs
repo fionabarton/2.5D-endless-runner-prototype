@@ -5,10 +5,6 @@ using UnityEngine.SceneManagement;
 
 // Handles general game functionality such as scene management and pausing the game.
 public class GameManager : MonoBehaviour {
-    [Header("Set in Inspector")]
-    // First scene to be loaded on Awake()
-    public string       firstScene;
-
     [Header("Set Dynamically")]
     // Stores whether game is paused
     public bool         paused;
@@ -36,9 +32,6 @@ public class GameManager : MonoBehaviour {
             // Destroy this object
             Destroy(gameObject);
         }
-
-        // Load first scene
-        SceneManager.LoadScene(firstScene);
     }
 
     void Update() {

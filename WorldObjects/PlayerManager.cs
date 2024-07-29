@@ -448,6 +448,9 @@ public class PlayerManager : MonoBehaviour {
 
             // Display text that the game has ended
             AnnouncerManager.S.DisplayGameOver();
+
+            // Stop game and reactivate main menu
+            MainMenu.S.StopGame();
         }
     }
 }

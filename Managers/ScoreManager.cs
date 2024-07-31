@@ -33,12 +33,6 @@ public class ScoreManager : MonoBehaviour {
         UpdateGUI();
     }
 
-    //
-    public void UpdateGUI() {
-        scoreText.text = "Score: " + score;
-        levelText.text = "Level: " + level;
-    }
-
     // Add one point to the user's score and update scoreboard UI
     public void AddToScore() {
         // Increment score and update UI
@@ -75,8 +69,11 @@ public class ScoreManager : MonoBehaviour {
 
     // On level select, increment game speeds and update GUI
     public void SetLevel(int levelNdx = 0) {
+        // Reset spawner speeds
+        ObjectSpawner.S.ResetSpeed();
+
         // Increment object move & spawn speeds
-        if(levelNdx != 0) {
+        if (levelNdx != 0) {
             for (int i = 0; i < levelNdx; i++) {
                 ObjectSpawner.S.IncrementSpeed();
             }
@@ -85,5 +82,11 @@ public class ScoreManager : MonoBehaviour {
         // Set level and update GUI
         level = levelNdx + 1;
         UpdateGUI();
+    }
+
+    //
+    public void UpdateGUI() {
+        scoreText.text = "Score: " + score;
+        levelText.text = "Level: " + level;
     }
 }

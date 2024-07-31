@@ -7,7 +7,9 @@ using UnityEngine.UI;
 public class MainMenu : MonoBehaviour {
     [Header("Set in Inspector")]
     public Button   startGameButton;
+    public Button   levelButton;
 
+    [Header("Set Dynamically")]
     // Single instance of this class, which provides global acess from other scripts
     private static MainMenu _S;
     public static MainMenu S { get { return _S; } set { _S = value; } }
@@ -20,6 +22,7 @@ public class MainMenu : MonoBehaviour {
     void Start() {
         // Add listeners to buttons
         startGameButton.onClick.AddListener(delegate { StartGame(); });
+        levelButton.onClick.AddListener(delegate { NumericalSelectionMenu.S.ActivateMenu(); });
     }
 
     void StartGame() {
@@ -27,7 +30,7 @@ public class MainMenu : MonoBehaviour {
         ObjectSpawner.S.isSpawning = true;
 
         // Deactivate main menu
-        gameObject.SetActive(false);    
+        MainMenu.S.gameObject.SetActive(false);    
     }
 
     public void StopGame() {
@@ -35,6 +38,6 @@ public class MainMenu : MonoBehaviour {
         ObjectSpawner.S.isSpawning = false;
 
         // Activate main menu
-        gameObject.SetActive(true);
+        MainMenu.S.gameObject.SetActive(true);
     }
 }

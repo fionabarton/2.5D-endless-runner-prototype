@@ -12,23 +12,17 @@ public class ObjectSpawner : MonoBehaviour {
     public GameObject           coinItem;
     public GameObject           shieldItem;
 
-    // Amount of time before object is spawned
-    public float                timeDuration = 2f;
-
     // Speed at which object moves forward
     public float                moveSpeed = 4;
-    float                       startingMoveSpeed = 4;
-    float                       amountToIncreaseMoveSpeed = 0.5f;
+    public float                startingMoveSpeed = 4;
+    public float                amountToIncreaseMoveSpeed = 0.15f;
 
     // Amount of time before object is spawned
-    float                       spawnSpeed = 4;
-    float                       startingSpawnSpeed = 4;
-    float                       amountToIncreaseSpawnSpeed = 0.5f;
+    public float                spawnSpeed = 4;
+    public float                startingSpawnSpeed = 4;
+    public float                amountToIncreaseSpawnSpeed = 0.15f;
 
-    // -3, -1.5f, 0, 1.5f, 3
     public List<float>          itemSpawnXPositions = new List<float>();
-
-    // -0.5f, 1, 2.5f, 4, 5.5f
     public List<float>          itemSpawnYPositions = new List<float>();
 
     [Header("Set Dynamically")]
@@ -41,6 +35,9 @@ public class ObjectSpawner : MonoBehaviour {
     //
     public int                  previousObjectNdx = -1;
     public int                  currentObjectNdx = -1;
+
+    // The position spawned objects are instantiated to on the z-axis.
+    int                         spawnPosZ = 20;
 
 
     // Single instance of this class, which provides global acess from other scripts
@@ -176,12 +173,12 @@ public class ObjectSpawner : MonoBehaviour {
 
     //
     void InstantiateHorizontalHighObstacle() {
-        Instantiate(horizontalHighObstacle, new Vector3(0, 6.25f, 10), Quaternion.identity * horizontalHighObstacle.transform.localRotation);
+        Instantiate(horizontalHighObstacle, new Vector3(0, 9f, spawnPosZ), Quaternion.identity * horizontalHighObstacle.transform.localRotation);
     }
 
     //
     void InstantiateHorizontalLowObstacle() {
-        Instantiate(horizontalLowObstacle, new Vector3(0, 2.5f, 10), Quaternion.identity * horizontalLowObstacle.transform.localRotation);
+        Instantiate(horizontalLowObstacle, new Vector3(0, 5f, spawnPosZ), Quaternion.identity * horizontalLowObstacle.transform.localRotation);
     }
 
     //
@@ -190,11 +187,11 @@ public class ObjectSpawner : MonoBehaviour {
         int ndx = Random.Range(0, 3);
 
         if (ndx == 0) {
-            Instantiate(verticalObstacles[ndx], new Vector3(-3f, 5.25f, 10), Quaternion.identity * verticalObstacles[ndx].transform.localRotation);
+            Instantiate(verticalObstacles[ndx], new Vector3(-3f, 8f, spawnPosZ), Quaternion.identity * verticalObstacles[ndx].transform.localRotation);
         } else if (ndx == 1) {
-            Instantiate(verticalObstacles[ndx], new Vector3(0, 5.25f, 10), Quaternion.identity * verticalObstacles[ndx].transform.localRotation);
+            Instantiate(verticalObstacles[ndx], new Vector3(0, 8f, spawnPosZ), Quaternion.identity * verticalObstacles[ndx].transform.localRotation);
         } else if (ndx == 2) {
-            Instantiate(verticalObstacles[ndx], new Vector3(3, 5.25f, 10), Quaternion.identity * verticalObstacles[ndx].transform.localRotation);
+            Instantiate(verticalObstacles[ndx], new Vector3(3, 8f, spawnPosZ), Quaternion.identity * verticalObstacles[ndx].transform.localRotation);
         }  
     }
 
@@ -215,7 +212,7 @@ public class ObjectSpawner : MonoBehaviour {
         int y = Random.Range(0, 4);
 
         // Return position with random values
-        return new Vector3(itemSpawnXPositions[x], itemSpawnYPositions[y], 10);
+        return new Vector3(itemSpawnXPositions[x], itemSpawnYPositions[y], spawnPosZ);
     }
 
     // Increment object move and spawn speeds by an adjustable amount

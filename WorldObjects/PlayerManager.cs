@@ -41,6 +41,9 @@ public class PlayerManager : MonoBehaviour {
     // Tracks whether the player is shielded
     public bool                 isShielded = false;
 
+    // Tracks whether the player is able to move via player input
+    public bool                 isMobile = false;
+
     // Location to respawn player
     public Vector3              respawnPos;
 
@@ -167,233 +170,240 @@ public class PlayerManager : MonoBehaviour {
     }
 
     void Update() {
-        // Depending on current value of mode...
-        switch (mode) {
-            // ...offer user different sets of actions to be performed via keyboard input
-            case ePlayerMode.idle:
-                // (Duck)
-                CheckForDuckInput();
-                // On (shift) pressed and is grounded, (attack)
-                if (Input.GetAxisRaw("Attack/Run") > 0 && isGrounded) { 
-                    mode = ePlayerMode.attack; 
-                }
-                // (Walk)
-                CheckForWalkInput();
-                // (Run)
-                CheckForRunInput();
-                // (Jump up)
-                CheckForJumpInput(jumpSpeed, isGrounded);
-                break;
-            case ePlayerMode.walkLeft:
-                // On (right arrow) pressed or (left arrow) released, (idle)
-                if (Input.GetAxisRaw("Horizontal") >= 0) {
-                    Idle();
-                }
-                // On (left arrow) and (shift) pressed, (run left)
-                if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Attack/Run") > 0) {
-                    mode = ePlayerMode.runLeft;
-                }
-                // (Jump up)
-                CheckForJumpInput(jumpSpeed, isGrounded);
-                break;
-            case ePlayerMode.walkRight:
-                // On (left arrow) pressed or or (right arrow) released, (idle)
-                if (Input.GetAxisRaw("Horizontal") <= 0) {
-                    Idle();
-                }
-                // On (right arrow) and (shift) pressed, (run right)
-                if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Attack/Run") > 0) {
-                    mode = ePlayerMode.runRight;
-                }
-                // (Jump up)
-                CheckForJumpInput(jumpSpeed, isGrounded);
-                break;
-            case ePlayerMode.runLeft:
-                // On (right arrow) pressed or (left arrow) released, (idle)
-                if (Input.GetAxisRaw("Horizontal") >= 0) {
-                    Idle();
-                }
-                // On (left arrow) pressed and (shift) released, (walk left)
-                if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Attack/Run") <= 0) {
-                    mode = ePlayerMode.walkLeft;
-                }
-                // On (right arrow) and (shift) pressed, (run right)
-                if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Attack/Run") > 0) {
-                    mode = ePlayerMode.runRight;
-                }
-                // (Jump up)
-                CheckForJumpInput(jumpSpeed, isGrounded);
-                break;
-            case ePlayerMode.runRight:
-                // On (left arrow) pressed or (right arrow) released, (idle)
-                if (Input.GetAxisRaw("Horizontal") <= 0) {
-                    Idle();
-                }
-                // On (right arrow) pressed and (shift) released, (walk right)
-                if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Attack/Run") <= 0) {
-                    mode = ePlayerMode.walkRight;
-                }
-                // On (left arrow) and (shift) pressed, (run left)
-                if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Attack/Run") > 0) {
-                    mode = ePlayerMode.runLeft;
-                }
-                // (Jump up)
-                CheckForJumpInput(jumpSpeed, isGrounded);
-                break;
-            case ePlayerMode.attack:
-                // On (shift) released, (idle)
-                if (Input.GetAxisRaw("Attack/Run") <= 0) {
-                    Idle();
-                }
-                // (Walk)
-                CheckForWalkInput();
-                // (Run)
-                CheckForRunInput();
-                // (Jump up)
-                CheckForJumpInput(jumpSpeed, isGrounded);
-                break;
-            case ePlayerMode.jumpFull:
-                if (isGrounded) {
-                    // On (shift) pressed, (attack)
-                    if (Input.GetAxisRaw("Attack/Run") > 0) { 
-                        mode = ePlayerMode.attack; 
+        if (isMobile) {
+            // Depending on current value of mode...
+            switch (mode) {
+                // ...offer user different sets of actions to be performed via keyboard input
+                case ePlayerMode.idle:
+                    // (Duck)
+                    CheckForDuckInput();
+                    // On (shift) pressed and is grounded, (attack)
+                    if (Input.GetAxisRaw("Attack/Run") > 0 && isGrounded) {
+                        mode = ePlayerMode.attack;
                     }
-                    // (Walk) 
+                    // (Walk)
                     CheckForWalkInput();
                     // (Run)
                     CheckForRunInput();
-                }
-                break;
-            case ePlayerMode.jumpHalf:
-                if (isGrounded) {
-                    // On (shift) pressed, (attack)
-                    if (Input.GetAxisRaw("Attack/Run") > 0) { 
-                        mode = ePlayerMode.attack; 
+                    // (Jump up)
+                    CheckForJumpInput(jumpSpeed, isGrounded);
+                    break;
+                case ePlayerMode.walkLeft:
+                    // On (right arrow) pressed or (left arrow) released, (idle)
+                    if (Input.GetAxisRaw("Horizontal") >= 0) {
+                        Idle();
                     }
-                    // (Walk) 
+                    // On (left arrow) and (shift) pressed, (run left)
+                    if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Attack/Run") > 0) {
+                        mode = ePlayerMode.runLeft;
+                    }
+                    // (Jump up)
+                    CheckForJumpInput(jumpSpeed, isGrounded);
+                    break;
+                case ePlayerMode.walkRight:
+                    // On (left arrow) pressed or or (right arrow) released, (idle)
+                    if (Input.GetAxisRaw("Horizontal") <= 0) {
+                        Idle();
+                    }
+                    // On (right arrow) and (shift) pressed, (run right)
+                    if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Attack/Run") > 0) {
+                        mode = ePlayerMode.runRight;
+                    }
+                    // (Jump up)
+                    CheckForJumpInput(jumpSpeed, isGrounded);
+                    break;
+                case ePlayerMode.runLeft:
+                    // On (right arrow) pressed or (left arrow) released, (idle)
+                    if (Input.GetAxisRaw("Horizontal") >= 0) {
+                        Idle();
+                    }
+                    // On (left arrow) pressed and (shift) released, (walk left)
+                    if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Attack/Run") <= 0) {
+                        mode = ePlayerMode.walkLeft;
+                    }
+                    // On (right arrow) and (shift) pressed, (run right)
+                    if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Attack/Run") > 0) {
+                        mode = ePlayerMode.runRight;
+                    }
+                    // (Jump up)
+                    CheckForJumpInput(jumpSpeed, isGrounded);
+                    break;
+                case ePlayerMode.runRight:
+                    // On (left arrow) pressed or (right arrow) released, (idle)
+                    if (Input.GetAxisRaw("Horizontal") <= 0) {
+                        Idle();
+                    }
+                    // On (right arrow) pressed and (shift) released, (walk right)
+                    if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Attack/Run") <= 0) {
+                        mode = ePlayerMode.walkRight;
+                    }
+                    // On (left arrow) and (shift) pressed, (run left)
+                    if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Attack/Run") > 0) {
+                        mode = ePlayerMode.runLeft;
+                    }
+                    // (Jump up)
+                    CheckForJumpInput(jumpSpeed, isGrounded);
+                    break;
+                case ePlayerMode.attack:
+                    // On (shift) released, (idle)
+                    if (Input.GetAxisRaw("Attack/Run") <= 0) {
+                        Idle();
+                    }
+                    // (Walk)
                     CheckForWalkInput();
                     // (Run)
                     CheckForRunInput();
-                }
-                break;
-            case ePlayerMode.hanger:
-                // Jump up off hanger (at reduced speed)
-                CheckForJumpInput(jumpSpeed / 1.25f, true);
-                
-                // On (down arrow) pressed, (release hanger)
-                if (Input.GetAxisRaw("Vertical") < 0f) {
-                    ReleaseHanger();
-                }
-                // Jump left or right off hanger
-                CheckForJumpLeftOrRightFromHangerInput();
-                break;
-            case ePlayerMode.duck:
-                // On (down arrow) released, (idle)
-                if (Input.GetAxisRaw("Vertical") >= 0) {
-                    Idle();
-                }
-                // (Jump up)
-                CheckForJumpInput(jumpSpeed, isGrounded);
-                break;
+                    // (Jump up)
+                    CheckForJumpInput(jumpSpeed, isGrounded);
+                    break;
+                case ePlayerMode.jumpFull:
+                    if (isGrounded) {
+                        // On (shift) pressed, (attack)
+                        if (Input.GetAxisRaw("Attack/Run") > 0) {
+                            mode = ePlayerMode.attack;
+                        }
+                        // (Walk) 
+                        CheckForWalkInput();
+                        // (Run)
+                        CheckForRunInput();
+                    }
+                    break;
+                case ePlayerMode.jumpHalf:
+                    if (isGrounded) {
+                        // On (shift) pressed, (attack)
+                        if (Input.GetAxisRaw("Attack/Run") > 0) {
+                            mode = ePlayerMode.attack;
+                        }
+                        // (Walk) 
+                        CheckForWalkInput();
+                        // (Run)
+                        CheckForRunInput();
+                    }
+                    break;
+                case ePlayerMode.hanger:
+                    // Jump up off hanger (at reduced speed)
+                    CheckForJumpInput(jumpSpeed / 1.25f, true);
+
+                    // On (down arrow) pressed, (release hanger)
+                    if (Input.GetAxisRaw("Vertical") < 0f) {
+                        ReleaseHanger();
+                    }
+                    // Jump left or right off hanger
+                    CheckForJumpLeftOrRightFromHangerInput();
+                    break;
+                case ePlayerMode.duck:
+                    // On (down arrow) released, (idle)
+                    if (Input.GetAxisRaw("Vertical") >= 0) {
+                        Idle();
+                    }
+                    // (Jump up)
+                    CheckForJumpInput(jumpSpeed, isGrounded);
+                    break;
+            }
         }
     }
 
     void FixedUpdate() {
-        // If player GameObject is active in current scene...
-        if (gameObject.activeInHierarchy) {  
-            // Check whether the player's feet are on the ground
-            isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.25f, groundLayer);
+        
+            // If player GameObject is active in current scene...
+            if (gameObject.activeInHierarchy) {
+                // Check whether the player's feet are on the ground
+                isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.25f, groundLayer);
 
-            // If player moves in direction it's not facing,
-            // swap direction its sprite is facing
-            if (Input.GetAxisRaw("Horizontal") > 0 && !facingRight) {
-                SwapDirectionFacing();
-            } else if (Input.GetAxisRaw("Horizontal") < 0 && facingRight) {
-                SwapDirectionFacing();
-            }
-
-            // Simulate drag, or natural energy loss, on player horizontal movement
-            // by multiplying velocity.x of its RigidBody2D by a value slightly
-            // less than 1.0f
-            Vector2 vel = rigid.velocity;
-            vel.x *= 1.0f - 0.5f;
-            rigid.velocity = vel;
-
-            // If not grounded, play (jump) animation clip
-            if (!isGrounded) {
-                if (mode != ePlayerMode.attack && mode != ePlayerMode.hanger && mode != ePlayerMode.duck) {
-                    PlayClip("Player_Jump", 0);
+                // If player moves in direction it's not facing,
+                // swap direction its sprite is facing
+                if (Input.GetAxisRaw("Horizontal") > 0 && !facingRight) {
+                    SwapDirectionFacing();
+                } else if (Input.GetAxisRaw("Horizontal") < 0 && facingRight) {
+                    SwapDirectionFacing();
                 }
-            }
 
-            // Depending on mode, set RigidBody velocity & animation clip to play
-            switch (mode) {
-                case ePlayerMode.idle:
-                    if (isGrounded) {
-                        // If grounded, play (idle) animation clip
-                        PlayClip("Player_Idle");
-                    } else {
-                        // If not grounded, play (jump) animation clip
+                //if (isMobile) {
+                    // Simulate drag, or natural energy loss, on player horizontal movement
+                    // by multiplying velocity.x of its RigidBody2D by a value slightly
+                    // less than 1.0f
+                    Vector2 vel = rigid.velocity;
+                    vel.x *= 1.0f - 0.5f;
+                    rigid.velocity = vel;
+                //}
+
+                // If not grounded, play (jump) animation clip
+                if (!isGrounded) {
+                    if (mode != ePlayerMode.attack && mode != ePlayerMode.hanger && mode != ePlayerMode.duck) {
                         PlayClip("Player_Jump", 0);
                     }
-                    break;
-                case ePlayerMode.walkLeft:
-                    // Set velocity to (walk left) speed
-                    rigid.velocity = new Vector2(-walkSpeed, rigid.velocity.y);
+                }
 
-                    // If grounded, play (walk) animation clip
-                    if (isGrounded) {
-                        PlayClip("Player_Walk");
-                    }
-                    break;
-                case ePlayerMode.walkRight:
-                    // Set velocity to (walk right) speed
-                    rigid.velocity = new Vector2(walkSpeed, rigid.velocity.y);
 
-                    // If grounded, play (walk) animation clip
-                    if (isGrounded) {
-                        PlayClip("Player_Walk");
-                    }
-                    break;
-                case ePlayerMode.attack:
-                    // Play (attack) animation clip
-                    PlayClip("Player_Attack", 0);
-                    break;
-                case ePlayerMode.jumpFull:
-                    // Set player mode to (idle)
-                    Idle();
-                    break;
-                case ePlayerMode.jumpHalf:
-                    // Set velocity to (jump half) speed
-                    rigid.velocity *= 0.5f;
+                // Depending on mode, set RigidBody velocity & animation clip to play
+                switch (mode) {
+                    case ePlayerMode.idle:
+                        if (isGrounded) {
+                            // If grounded, play (idle) animation clip
+                            PlayClip("Player_Idle");
+                        } else {
+                            // If not grounded, play (jump) animation clip
+                            PlayClip("Player_Jump", 0);
+                        }
+                        break;
+                    case ePlayerMode.walkLeft:
+                        // Set velocity to (walk left) speed
+                        rigid.velocity = new Vector2(-walkSpeed, rigid.velocity.y);
 
-                    // Set player mode to (idle)
-                    Idle();
-                    break;
-                case ePlayerMode.runLeft:
-                    // Set velocity to (run left) speed
-                    rigid.velocity = new Vector2(-walkSpeed * 2, rigid.velocity.y);
+                        // If grounded, play (walk) animation clip
+                        if (isGrounded) {
+                            PlayClip("Player_Walk");
+                        }
+                        break;
+                    case ePlayerMode.walkRight:
+                        // Set velocity to (walk right) speed
+                        rigid.velocity = new Vector2(walkSpeed, rigid.velocity.y);
 
-                    // If grounded, play (run) animation clip
-                    if (isGrounded) {
-                        PlayClip("Player_Run");
-                    }
-                    break;
-                case ePlayerMode.runRight:
-                    // Set velocity to (run right) speed
-                    rigid.velocity = new Vector2(walkSpeed * 2, rigid.velocity.y);
+                        // If grounded, play (walk) animation clip
+                        if (isGrounded) {
+                            PlayClip("Player_Walk");
+                        }
+                        break;
+                    case ePlayerMode.attack:
+                        // Play (attack) animation clip
+                        PlayClip("Player_Attack", 0);
+                        break;
+                    case ePlayerMode.jumpFull:
+                        // Set player mode to (idle)
+                        Idle();
+                        break;
+                    case ePlayerMode.jumpHalf:
+                        // Set velocity to (jump half) speed
+                        rigid.velocity *= 0.5f;
 
-                    // If grounded, play (run) animation clip
-                    if (isGrounded) {
-                        PlayClip("Player_Run");
-                    }
-                    break;
-                case ePlayerMode.duck:
-                    // Play (duck) animation clip
-                    PlayClip("Player_Duck", 0);
-                    break;
+                        // Set player mode to (idle)
+                        Idle();
+                        break;
+                    case ePlayerMode.runLeft:
+                        // Set velocity to (run left) speed
+                        rigid.velocity = new Vector2(-walkSpeed * 2, rigid.velocity.y);
+
+                        // If grounded, play (run) animation clip
+                        if (isGrounded) {
+                            PlayClip("Player_Run");
+                        }
+                        break;
+                    case ePlayerMode.runRight:
+                        // Set velocity to (run right) speed
+                        rigid.velocity = new Vector2(walkSpeed * 2, rigid.velocity.y);
+
+                        // If grounded, play (run) animation clip
+                        if (isGrounded) {
+                            PlayClip("Player_Run");
+                        }
+                        break;
+                    case ePlayerMode.duck:
+                        // Play (duck) animation clip
+                        PlayClip("Player_Duck", 0);
+                        break;
+                }
             }
-        }
+        
     }
 
     // Set player scale on x-axis to its additive inverse,
@@ -437,20 +447,25 @@ public class PlayerManager : MonoBehaviour {
     // End the game and reset all changed values to their default settings
     public void GameOver() {
         if (!isShielded) {
-            // Reset score
-            ScoreManager.S.ResetScore();
-
-            // Reset object spawner speeds
-            ObjectSpawner.S.ResetSpeed();
-
-            // Reset shield
+            // Reset shield & starting position
             DeactivateShield();
+            MoveToStartingPosition();
 
             // Display text that the game has ended
             AnnouncerManager.S.DisplayGameOver();
 
             // Stop game and reactivate main menu
             MainMenu.S.StopGame();
+        }
+    }
+
+    // Set whether the player is able to move via player input
+    public void SetMobility(bool _isMobile) { 
+        isMobile = _isMobile;
+
+        // Reduce velocity to 0
+        if (!isMobile) {
+            rigid.velocity = Vector3.zero;
         }
     }
 }

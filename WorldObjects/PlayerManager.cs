@@ -303,8 +303,7 @@ public class PlayerManager : MonoBehaviour {
         }
     }
 
-    void FixedUpdate() {
-        
+    void FixedUpdate() {  
             // If player GameObject is active in current scene...
             if (gameObject.activeInHierarchy) {
                 // Check whether the player's feet are on the ground
@@ -318,14 +317,12 @@ public class PlayerManager : MonoBehaviour {
                     SwapDirectionFacing();
                 }
 
-                //if (isMobile) {
-                    // Simulate drag, or natural energy loss, on player horizontal movement
-                    // by multiplying velocity.x of its RigidBody2D by a value slightly
-                    // less than 1.0f
-                    Vector2 vel = rigid.velocity;
-                    vel.x *= 1.0f - 0.5f;
-                    rigid.velocity = vel;
-                //}
+                // Simulate drag, or natural energy loss, on player horizontal movement
+                // by multiplying velocity.x of its RigidBody2D by a value slightly
+                // less than 1.0f
+                Vector2 vel = rigid.velocity;
+                vel.x *= 1.0f - 0.5f;
+                rigid.velocity = vel;
 
                 // If not grounded, play (jump) animation clip
                 if (!isGrounded) {

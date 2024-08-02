@@ -38,8 +38,8 @@ public class MainMenu : MonoBehaviour {
         // Reset score
         ScoreManager.S.ResetScore();
 
-        // Reset object spawner speeds
-        ObjectSpawner.S.ResetSpeed();
+        // Set level
+        ScoreManager.S.SetLevel(ScoreManager.S.startingLevel - 1);
     }
 
     public void StopGame() {

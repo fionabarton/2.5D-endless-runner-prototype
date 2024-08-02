@@ -12,6 +12,7 @@ public class ScoreManager : MonoBehaviour {
     [Header("Set Dynamically")]
     public int                      score = 0;
     public int                      level = 1;
+    public int                      startingLevel = 1;
 
     // Current amount of coins required to reach next level
     public int                      amountToNextLevel = 5;
@@ -28,7 +29,7 @@ public class ScoreManager : MonoBehaviour {
     // Reset the user's score to default values
     public void ResetScore() {
         score = 0;
-        level = 1;
+        level = startingLevel;
 
         UpdateGUI();
     }
@@ -81,6 +82,7 @@ public class ScoreManager : MonoBehaviour {
 
         // Set level and update GUI
         level = levelNdx + 1;
+        startingLevel = level;
         UpdateGUI();
     }
 

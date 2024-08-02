@@ -30,7 +30,16 @@ public class MainMenu : MonoBehaviour {
         ObjectSpawner.S.isSpawning = true;
 
         // Deactivate main menu
-        MainMenu.S.gameObject.SetActive(false);    
+        gameObject.SetActive(false);
+
+        // Unfreeze player
+        PlayerManager.S.SetMobility(true);
+
+        // Reset score
+        ScoreManager.S.ResetScore();
+
+        // Reset object spawner speeds
+        ObjectSpawner.S.ResetSpeed();
     }
 
     public void StopGame() {
@@ -38,6 +47,9 @@ public class MainMenu : MonoBehaviour {
         ObjectSpawner.S.isSpawning = false;
 
         // Activate main menu
-        MainMenu.S.gameObject.SetActive(true);
+        gameObject.SetActive(true);
+
+        // Freeze player
+        PlayerManager.S.SetMobility(false);
     }
 }

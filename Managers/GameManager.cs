@@ -1,57 +1,190 @@
-ï»¿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.XR.Interaction.Toolkit;
 
-// Handles general game functionality such as scene management and pausing the game.
+// Provides access to all components
 public class GameManager : MonoBehaviour {
-    [Header("Set Dynamically")]
-    // Stores whether game is paused
-    public bool         paused;
+    [Header("Set in Inspector")]
+    public ConfettiManager      confetti;
+    public HighScoreManager     highScore;
+    public ScoreManager         score;
+    public ObjectSpawner        spawner;
+    public DamageColliderFollow damageColl;
+    public ClimbProvider        climb;
+    public DisplayPodiumManager podiums;
+    public List<XRDirectClimbInteractor> climbInteractors;
 
-    // Transparent black image that covers entire screen when game paused
-    public GameObject   pauseBlackScreen;
+    // Objects to be activated/deactivated
+    public List<GameObject>     xrRayInteractorsGO;
 
-    // Single instance of this class, which provides global acess from other scripts
+    // Menu game objects
+    public GameObject           keyboardMenuGO;
+    public GameObject           highScoreMenuGO;
+    public GameObject           mainMenuGO;
+    public GameObject           moreMenuGO;
+    public GameObject           subMenuGO;
+    public GameObject           scoreboardMenuGO;
+    public GameObject           selectedHighScoreMenuGO;
+
+    // Menu scripts
+    public KeyboardInputMenu    keyboardMenuCS;
+    public MainMenu             mainMenuCS;
+    public MoreMenu             moreMenuCS;
+    public AlgorithmMenu        algorithmMenuCS;
+    public SubMenu              subMenuCS;
+    public ExitRunButton        exitRunButtonLeftCS;
+    public ExitRunButton        exitRunButtonRightCS;
+    public CustomAlgorithmMenu  customAlgorithmMenuCS;
+    public SelectedHighScoreMenu selectedHighScoreMenuCS;
+    public VibrationMenu        vibrationMenuCS;
+
+    // Audio
+    public AudioSource          playerAudioSource;
+    public AudioSource          UIAudioSource;
+
+    // Animators
+    public Animator             playerDamageColldierAnim;
+    public Animator             playerLeftHandAnim1;
+    public Animator             playerLeftHandAnim2;
+    public Animator             playerRightHandAnim1;
+    public Animator             playerRightHandAnim2;
+
+    // Claws
+    public Transform            playerLeftHandTrans1;
+    public Transform            playerLeftHandTrans2;
+    public Transform            playerRightHandTrans1;
+    public Transform            playerRightHandTrans2;
+
+    // Hand controllers for vibration
+    public XRController         leftXR;
+    public XRController         rightXR;
+
+    // Smoke particle system (on new level increases its starting size by 1)
+    public ParticleSystem       smokePS;
+
+    // Actual "under-the-hood" speed values 
+    public List<float>          objectSpeedValues;
+    public List<float>          amountToIncreaseValues;
+    public List<float>          spawnSpeedValues;
+    public List<float>          amountToDecreaseValues;
+
+    // Displayed "digestable-to-a-layperson" speed values
+    public List<float>          objectSpeedDisplayedValues;
+    public List<float>          amountToIncreaseDisplayedValues;
+    public List<float>          spawnSpeedDisplayedValues;
+    public List<float>          amountToDecreaseDisplayedValues;
+
+    [Header("Set dynamically")]
+    public GameObject           previouslyHighlightedGO;
+
+    //
+    public int                  fallBelowFloorCount;
+    public int                  damageCount;
+    public int                  pauseCount;
+
+    public bool                 playerIsInvincible;
+    public bool                 waitForDialogueToFinish;
+
+    public static AlleyManager  alley;
+    public static ColorManager  color;
+    public static ShieldManager shield;
+    public static Utilities     utilities;
+    public static WordManager   words;
+    public static AudioManager  audioMan;
+    public static SaveManager   save;
+
+    public ParticleSystem.MainModule smokePSmain;
+
     private static GameManager _S;
     public static GameManager S { get { return _S; } set { _S = value; } }
 
-    // Single instance of whether or not this object already exists
-    public static bool  exists;
-
-    void Awake(){
-        // Populate singleton with this instance
+    void Awake() {
         S = this;
+    }
 
-        // If an instance of this object doesn't already exist...
-        if (!exists) {
-            // On new scene load, do not destroy this object
-            exists = true;
-            DontDestroyOnLoad(gameObject);
-        } else {
-            // Destroy this object
-            Destroy(gameObject);
+    private void Start() {
+        // Get components
+        alley = GetComponent<AlleyManager>();
+        color = GetComponent<ColorManager>();
+        shield = GetComponent<ShieldManager>();
+        utilities = GetComponent<Utilities>();
+        words = GetComponent<WordManager>();
+        audioMan = GetComponent<AudioManager>();
+        save = GetComponent<SaveManager>();
+        smokePSmain = smokePS.main;
+    }
+
+    public void EnableClimbInteractors(bool isActive){
+        climbInteractors[0].enabled = isActive;
+        climbInteractors[1].enabled = isActive;
+    }
+
+    // Find and destroy all hazard and pickup game objects
+    public void DestroyAllObject() {
+        // Find all hazards and pickups
+        GameObject[] hazards = GameObject.FindGameObjectsWithTag("Hazard");
+        GameObject[] pickups = GameObject.FindGameObjectsWithTag("Pickup");
+
+        // Destroy all hazards and pickups
+        for (int i = 0; i < hazards.Length; i++) {
+            Destroy(hazards[i]);
+
+            // Instantiate exploding cubes
+            OnDestroyInstantiateExplodingCubes cubes = hazards[i].gameObject.GetComponent<OnDestroyInstantiateExplodingCubes>();
+            if (cubes) {
+                cubes.InstantiateCubes();
+            }
+        }
+        for (int i = 0; i < pickups.Length; i++) {
+            Destroy(pickups[i]);
         }
     }
 
-    void Update() {
-        // On 'p' key pressed...
-        if (Input.GetButtonDown("Pause")) {
-            if (!paused) {
-                // ...if not paused, pause game and freeze time scale.
-                paused = true;
-                Time.timeScale = 0.0f;
+    // Play smoke particle system and set its size based on the number of the level currently being played
+    public void PlaySmokeParticelSystemAndSetSize() {
+        // For levels 5 and higher...
+        if (score.level >= 5) {
+            // Set size based on level number
+            smokePSmain.startSize = score.level * 0.3f;
 
-                // Activate transparent black image covering entire screen
-                pauseBlackScreen.SetActive(true);     
-            } else {
-                // ...if paused, unpause game and reset time scale.
-                paused = false;
-                Time.timeScale = 1.0f;
-
-                // Deactivate transparent black image covering entire screen
-                pauseBlackScreen.SetActive(false);               
+            // If not playing, start playing
+            if (!smokePS.isPlaying) {
+                smokePS.Play();
             }
         }
     }
+
+    public float GetIncreasedSpawnSpeedLevel() {
+        // Convert both ‘current spawn speed’ AND ‘amount to increase’ from seconds to OPM
+        float currentSpawnSpeedOPM = 60 / spawner.currentSpawnSpeed;
+        float amountToIncreaseOPM = spawner.amountToDecreaseSpawnSpeed;
+
+        // Add them together
+        float sum = currentSpawnSpeedOPM + amountToIncreaseOPM;
+
+        // Convert the resulting sum from OPM to seconds
+        sum = 60 / sum;
+
+        // Return sum
+        return sum;
+    }
+
+    public void LeftXRSendHapticImpuse(float amplitude, float duration) {
+        leftXR.SendHapticImpulse((amplitude * vibrationMenuCS.vibrationMultiplier), duration);
+    }
+
+    public void RightXRSendHapticImpuse(float amplitude, float duration) {
+        rightXR.SendHapticImpulse((amplitude * vibrationMenuCS.vibrationMultiplier), duration);
+    }
+
+    //// For testing!
+    //private void Update() {
+    //    if (Input.GetKeyDown(KeyCode.Space)) {
+    //        Test();
+    //    }
+    //}
+    //void Test() {
+
+    //}
 }

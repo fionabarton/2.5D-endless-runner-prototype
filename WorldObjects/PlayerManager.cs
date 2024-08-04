@@ -451,6 +451,9 @@ public class PlayerManager : MonoBehaviour {
             // Display text that the game has ended
             AnnouncerManager.S.DisplayGameOver();
 
+            // Find and destroy all moving objects (obstacles, coins, & shields)
+            GameManager.S.DestroyAllObjects();
+
             // Stop game and reactivate main menu
             MainMenu.S.StopGame();
         }

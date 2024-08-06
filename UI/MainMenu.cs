@@ -48,8 +48,6 @@ public class MainMenu : MonoBehaviour {
 
         // Activate main menu
         gameObject.SetActive(true);
-
-        // Freeze player
-        PlayerManager.S.SetMobility(false);
+ 
     }
 }

@@ -66,6 +66,9 @@ public class ScoreManager : MonoBehaviour {
 
         // Display text that the player has reached the next level
         AnnouncerManager.S.DisplayNextLevel();
+
+        // Drop confetti
+        ConfettiManager.S.DropConfetti();
     }
 
     // On level select, increment game speeds and update GUI

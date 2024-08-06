@@ -5,7 +5,7 @@ using UnityEngine;
 
 // Actions performed by player
 public enum ePlayerMode {
-    idle, walkLeft, walkRight, runLeft, runRight, jumpFull, jumpHalf, attack, hanger, duck
+    idle, walkLeft, walkRight, runLeft, runRight, jumpFull, jumpHalf, attack, hanger, duck, damaged
 };
 
 // Handles player GameObject functions, including input, movement, and animation.
@@ -46,6 +46,9 @@ public class PlayerManager : MonoBehaviour {
 
     // Location to respawn player
     public Vector3              respawnPos;
+
+    // Specific time at which to stop being damaged
+    float                       timeDone;
 
     // Unity components
     public Rigidbody2D          rigid;
@@ -151,18 +154,18 @@ public class PlayerManager : MonoBehaviour {
     }
 
     // Reset gravity scale & player collider size
-    public void ReleaseHanger() {
+    public void ReleaseHanger(ePlayerMode mode = ePlayerMode.idle) {
         // Reset player mode and collider
-        Idle();
+        Idle(mode);
 
         // Reset gravity scale 
         rigid.gravityScale = 2;
     }
 
     // Reset player mode and circle collider properties to default values
-    public void Idle() {
+    public void Idle(ePlayerMode _mode = ePlayerMode.idle) {
         // Reset player mode to (idle)
-        mode = ePlayerMode.idle;
+        mode = _mode;
 
         // Reset collider radius & offset
         circleColl.radius = 0.35f;
@@ -299,6 +302,9 @@ public class PlayerManager : MonoBehaviour {
                     // (Jump up)
                     CheckForJumpInput(jumpSpeed, isGrounded);
                     break;
+                case ePlayerMode.damaged:
+                    //
+                    break;
             }
         }
     }
@@ -327,10 +333,12 @@ public class PlayerManager : MonoBehaviour {
                 // If not grounded, play (jump) animation clip
                 if (!isGrounded) {
                     if (mode != ePlayerMode.attack && mode != ePlayerMode.hanger && mode != ePlayerMode.duck) {
+                        if(mode!=ePlayerMode.damaged) {
                         PlayClip("Player_Jump", 0);
                     }
+     
+                    }
                 }
-
 
                 // Depending on mode, set RigidBody velocity & animation clip to play
                 switch (mode) {
@@ -398,6 +406,10 @@ public class PlayerManager : MonoBehaviour {
                         // Play (duck) animation clip
                         PlayClip("Player_Duck", 0);
                         break;
+                    case ePlayerMode.damaged:
+                        // Play (damaged) animation clip
+                        PlayClip("Player_Damaged");
+                        break;
                 }
             }
         
@@ -443,20 +455,23 @@ public class PlayerManager : MonoBehaviour {
 
     // End the game and reset all changed values to their default settings
     public void GameOver() {
-        if (!isShielded) {
-            // Reset shield & starting position
-            DeactivateShield();
-            MoveToStartingPosition();
+        // Freeze player
+        SetMobility(false);
 
-            // Display text that the game has ended
-            AnnouncerManager.S.DisplayGameOver();
+        // Reset shield & starting position
+        DeactivateShield();
+        MoveToStartingPosition();
 
-            // Find and destroy all moving objects (obstacles, coins, & shields)
-            GameManager.S.DestroyAllObjects();
+        // Display text that the game has ended
+        AnnouncerManager.S.DisplayGameOver();
 
-            // Stop game and reactivate main menu
-            MainMenu.S.StopGame();
-        }
+        // Find and destroy all moving objects (obstacles, coins, & shields)
+        GameManager.S.DestroyAllObjects();
+
+        // Stop game and reactivate main menu
+        MainMenu.S.StopGame();
+
+        StopAllCoroutines();
     }
 
     // Set whether the player is able to move via player input
@@ -468,4 +483,30 @@ public class PlayerManager : MonoBehaviour {
             rigid.velocity = Vector3.zero;
         }
     }
+
+    //
+    public void Damaged() {
+        // Release from hanger
+        ReleaseHanger();
+
+        //// Release from hanger and reset player mode to (damaged)
+        //ReleaseHanger(ePlayerMode.damaged);
+
+        //// Set time to reset player mode to idle
+        //timeDone = 0.25f + Time.time;
+
+        //// Start coroutine
+        //StartCoroutine("WaitToResetPlayerMode");
+    }
+
+    //public IEnumerator WaitToResetPlayerMode() { 
+    //    //  If timer done, reset player mode to idle
+    //    if (timeDone <= Time.time) {
+    //        Idle();
+    //    }
+
+    //    // Loop timer by restarting this coroutine
+    //    yield return new WaitForFixedUpdate();
+    //    StartCoroutine("WaitToResetPlayerMode");
+    //}
 }

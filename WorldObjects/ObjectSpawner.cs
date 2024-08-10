@@ -13,13 +13,13 @@ public class ObjectSpawner : MonoBehaviour {
     public GameObject           shieldItem;
 
     // Speed at which object moves forward
-    public float                moveSpeed = 4;
-    public float                startingMoveSpeed = 4;
-    public float                amountToIncreaseMoveSpeed = 0.15f;
+    public float                moveSpeed = 5;
+    public float                startingMoveSpeed = 5; 
+    public float                amountToIncreaseMoveSpeed = 0.5f; 
 
     // Amount of time before object is spawned
     public float                spawnSpeed = 4;
-    public float                startingSpawnSpeed = 4;
+    public float                startingSpawnSpeed = 4.5f; 
     public float                amountToIncreaseSpawnSpeed = 0.15f;
 
     public List<float>          itemSpawnXPositions = new List<float>();

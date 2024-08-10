@@ -8,11 +8,23 @@ public class DestroyOverTime : MonoBehaviour {
     // Amount of time before object is destroyed
     public float    timeDuration = 15f;
 
+    public bool     onEnableStartTimer = false;
+
     [Header("Set Dynamically")]
     // Specific time at which to destroy object
     private float   timeDone;
 
     void OnEnable() {
+        if (onEnableStartTimer) {
+            // Set time to destroy object
+            timeDone = timeDuration + Time.time;
+
+            // Start timer
+            StartCoroutine("FixedUpdateCoroutine");
+        }
+    }
+
+    public void StartTimerToDestruction() {
         // Set time to destroy object
         timeDone = timeDuration + Time.time;
 

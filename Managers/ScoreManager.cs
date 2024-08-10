@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,8 @@ public class ScoreManager : MonoBehaviour {
     public int                      score = 0;
     public int                      level = 1;
     public int                      startingLevel = 1;
+    public float                    startingTime = 0f;
+    public float                    endingTime = 0f;
 
     // Current amount of coins required to reach next level
     public int                      amountToNextLevel = 5;
@@ -30,6 +33,8 @@ public class ScoreManager : MonoBehaviour {
     public void ResetScore() {
         score = 0;
         level = startingLevel;
+        startingTime = 0f;
+        endingTime = 0f;
 
         UpdateGUI();
     }
@@ -87,6 +92,23 @@ public class ScoreManager : MonoBehaviour {
         level = levelNdx + 1;
         startingLevel = level;
         UpdateGUI();
+    }
+
+    // Get and return total time in '00:00:00:000' format
+    public string GetTime(float _endingTime) {
+        // Get time in seconds
+        float time = _endingTime - startingTime;
+
+        // Convert time to '00:00:00:000' format
+        TimeSpan t = TimeSpan.FromSeconds(time);
+        string timeString = string.Format("{0:D2}:{1:D2}:{2:D2}:{3:D3}",
+        t.Hours,
+        t.Minutes,
+        t.Seconds,
+        t.Milliseconds);
+
+        // Return string
+        return timeString;
     }
 
     //

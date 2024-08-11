@@ -58,14 +58,18 @@ public class AnnouncerManager : MonoBehaviour {
     public void DisplayGameOver() {
         DisplayText("GAME OVER" + "!", Color.red);
     }
-    //public void ResetDisplayText() {
-    //    DisplayText("..." + "!", Color.white);
-    //}
+    public void DisplayAmountToNextLevel() {
+        DisplayText(ScoreManager.S.amountToNextLevel + "\nTO GO!", ColorManager.S.alleyMaterial1.color, false);
+    }
 
     // Set text and color of announcer UI text game object
-    void DisplayText(string message, Color textColor) {
+    void DisplayText(string message, Color textColor, bool announceAmountToNextLevel = true) {
         announcerText.color = textColor;
         announcerText.text = message;
+
+        if (announceAmountToNextLevel) {
+            Invoke("DisplayAmountToNextLevel", 2);
+        }
     }
 
     // Returns a random positive word or phrase
@@ -119,9 +123,4 @@ public class AnnouncerManager : MonoBehaviour {
             remainingInterjectionNdxs.Add(i);
         }
     }
-
-    // Display amount of collectibles needed to proceed to next level
-    //void DisplayAmountToNextLevel() {
-    //    announcerText.text = ScoreManager.S.amountToNextLevel + "\nTO GO!";
-    //}
 }

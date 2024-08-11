@@ -74,6 +74,9 @@ public class ScoreManager : MonoBehaviour {
 
         // Drop confetti
         ConfettiManager.S.DropConfetti();
+
+        // Set color palette
+        ColorManager.S.GetNewColorPalette();
     }
 
     // On level select, increment game speeds and update GUI
@@ -92,6 +95,14 @@ public class ScoreManager : MonoBehaviour {
         level = levelNdx + 1;
         startingLevel = level;
         UpdateGUI();
+
+        // Set colorNdx
+        if (level != 1) {
+            ColorManager.S.colorNdx = level - 2;
+            ColorManager.S.GetNewColorPalette();
+        } else {
+            ColorManager.S.ResetPalette();
+        }
     }
 
     // Get and return total time in '00:00:00:000' format

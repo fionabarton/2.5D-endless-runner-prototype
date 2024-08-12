@@ -69,4 +69,10 @@ public class GameManager : MonoBehaviour {
             Destroy(items[i]);
         }
     }
+
+    // Get midpoint between two gameObjects
+    public Vector3 GetMidpoint(GameObject object1, GameObject object2) {
+        Vector3 midpoint = object2.transform.position + (object1.transform.position - object2.transform.position) / 2;
+        return midpoint;
+    }
 }

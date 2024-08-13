@@ -151,6 +151,9 @@ public class PlayerManager : MonoBehaviour {
 
         // Play hanging animation clip
         PlayClip("Player_Hanging");
+
+        // Play SFX
+        AudioManager.S.PlaySFX(eSFXAudioClipName.grabHanger);
     }
 
     // Reset gravity scale & player collider size
@@ -440,6 +443,9 @@ public class PlayerManager : MonoBehaviour {
         shield.SetActive(true);
         isShielded = true;
 
+        // Play SFX
+        AudioManager.S.PlaySFX(eSFXAudioClipName.grabShield);
+
         // Display text that shield has been activated
         AnnouncerManager.S.DisplayShield();
     }
@@ -468,26 +474,22 @@ public class PlayerManager : MonoBehaviour {
         // Find and destroy all moving objects (obstacles, coins, & shields)
         GameManager.S.DestroyAllObjects();
 
+        // Play SFX
+        AudioManager.S.PlaySFX(eSFXAudioClipName.death);
+
         // Stop game and reactivate main menu
         MainMenu.S.StopGame();
 
         StopAllCoroutines();
     }
 
-    // Set whether the player is able to move via player input
-    public void SetMobility(bool _isMobile) { 
-        isMobile = _isMobile;
-
-        // Reduce velocity to 0
-        if (!isMobile) {
-            rigid.velocity = Vector3.zero;
-        }
-    }
-
     //
     public void Damaged() {
         // Release from hanger
         ReleaseHanger();
+
+        // Play SFX
+        AudioManager.S.PlaySFX(eSFXAudioClipName.damage);
 
         //// Release from hanger and reset player mode to (damaged)
         //ReleaseHanger(ePlayerMode.damaged);
@@ -497,6 +499,16 @@ public class PlayerManager : MonoBehaviour {
 
         //// Start coroutine
         //StartCoroutine("WaitToResetPlayerMode");
+    }
+
+    // Set whether the player is able to move via player input
+    public void SetMobility(bool _isMobile) {
+        isMobile = _isMobile;
+
+        // Reduce velocity to 0
+        if (!isMobile) {
+            rigid.velocity = Vector3.zero;
+        }
     }
 
     //public IEnumerator WaitToResetPlayerMode() { 

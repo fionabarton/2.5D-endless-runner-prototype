@@ -42,11 +42,17 @@ public class MainMenu : MonoBehaviour {
 
         // Set level
         ScoreManager.S.SetLevel(ScoreManager.S.startingLevel - 1);
+
+        // Play BGM
+        AudioManager.S.PlayBGM(eBGMAudioClipName.gameplay);
     }
 
     public void StopGame() {
         // Stop objects from spawning
         ObjectSpawner.S.isSpawning = false;
+
+        // Play BGM
+        AudioManager.S.PlayBGM(eBGMAudioClipName.mainMenu);
 
         // Activate main menu
         gameObject.SetActive(true);

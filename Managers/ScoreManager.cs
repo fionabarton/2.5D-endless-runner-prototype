@@ -35,6 +35,7 @@ public class ScoreManager : MonoBehaviour {
         level = startingLevel;
         startingTime = 0f;
         endingTime = 0f;
+        amountToNextLevel = 5;
 
         UpdateGUI();
     }
@@ -52,6 +53,9 @@ public class ScoreManager : MonoBehaviour {
             // Proceed to next level
             NextLevel();
         } else {
+            // Play SFX
+            AudioManager.S.PlaySFX(eSFXAudioClipName.grabCoin);
+
             // Display text of a random exclamation
             AnnouncerManager.S.DisplayRandomExclamation();
         }
@@ -77,6 +81,10 @@ public class ScoreManager : MonoBehaviour {
 
         // Set color palette
         ColorManager.S.GetNewColorPalette();
+
+        // Play SFX
+        AudioManager.S.PlaySFX(eSFXAudioClipName.applause);
+        AudioManager.S.PlaySFX(eSFXAudioClipName.grabCoinLevelUp);
     }
 
     // On level select, increment game speeds and update GUI

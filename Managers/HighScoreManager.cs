@@ -5,7 +5,7 @@ using UnityEngine;
 // Handles creating and adjusting entries on the high score leaderboard.
 public class HighScoreManager : MonoBehaviour {
     [Header("Set Dynamically")]
-    public HighScore[] entries;
+    public HighScore[]  entries;
 
     public List<string> names = new List<string>();
 

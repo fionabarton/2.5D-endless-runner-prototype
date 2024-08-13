@@ -9,6 +9,7 @@ public class MainMenu : MonoBehaviour {
     public Button   startGameButton;
     public Button   levelButton;
     public Button   highScoreMenuButton;
+    public Button   optionsMenuButton;
 
     [Header("Set Dynamically")]
     // Single instance of this class, which provides global acess from other scripts
@@ -25,6 +26,7 @@ public class MainMenu : MonoBehaviour {
         startGameButton.onClick.AddListener(delegate { StartGame(); });
         levelButton.onClick.AddListener(delegate { NumericalSelectionMenu.S.ActivateMenu(); });
         highScoreMenuButton.onClick.AddListener(delegate { HighScoreMenu.S.ActivateMenu(); });
+        optionsMenuButton.onClick.AddListener(delegate { OptionsMenu.S.ActivateMenu(); });
     }
 
     void StartGame() {

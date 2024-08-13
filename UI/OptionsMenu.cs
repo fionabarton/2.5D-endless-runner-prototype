@@ -20,13 +20,21 @@ public class OptionsMenu : MonoBehaviour {
 
     void Start() {
         // Add listener
-        goBackButton.onClick.AddListener(delegate { Deactivate(); });
+        goBackButton.onClick.AddListener(delegate { Deactivate(true); });
 
         Invoke("OnStart", 0.1f);
     }
 
     void OnStart() {
         Deactivate();
+    }
+
+    public void ActivateMenu() {
+        // Activate this game object
+        gameObject.SetActive(true);
+
+        // Play BGM
+        AudioManager.S.PlayBGM(eBGMAudioClipName.optionsMenu);
     }
 
     void Deactivate(bool playMainMenuBGM = false) {

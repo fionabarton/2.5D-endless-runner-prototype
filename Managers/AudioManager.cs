@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum eBGMAudioClipName { mainMenu, optionsMenu, highScoreMenu, gameplay, gameOver, newHighScore };
-public enum eSFXAudioClipName { applause, applauseLoop, buttonPressedConfirm, buttonPressedDeny, buttonSelected, damage, death, grabHanger, grabItem, grabItemLevelUp, pause, scream, unpause };
+public enum eSFXAudioClipName { applause, applauseLoop, buttonPressedConfirm, buttonPressedDeny, buttonSelected, damage, death, grabCoin, grabCoinLevelUp, grabHanger, grabShield, pause, scream, unpause };
+public enum eVOX {
+    vox1, vox1ToGo, vox2, vox2ToGo, vox3, vox3ToGo, vox4ToGo, vox5ToGo, voxGameOver, voxGetReady, 
+    voxGo, voxLetsGo, voxNewHighScore, voxNextLevel, voxShield, voxNull
+};
 
 // Handles playing, stopping, or looping music and sound effects. 
 public class AudioManager : MonoBehaviour {
@@ -19,13 +23,19 @@ public class AudioManager : MonoBehaviour {
     public AudioSource          buttonSelectedAS;
     public AudioSource          damageAS;
     public AudioSource          deathAS;
+    public AudioSource          grabCoinAS;
+    public AudioSource          grabCoinLevelUpAS;
     public AudioSource          grabHangerAS;
-    public AudioSource          grabItemAS;
-    public AudioSource          grabItemLevelUpAS;
+    public AudioSource          grabShieldAS;
     public AudioSource          pauseAS;
     public AudioSource          screamAS;
     public AudioSource          unpauseAS;
-   
+
+    public AudioSource          VOXAudioSource;
+    public List<AudioClip>      voxClips = new List<AudioClip>();
+    public List<AudioClip>      voxExclamationClips = new List<AudioClip>();
+    public List<AudioClip>      voxInterjectionClips = new List<AudioClip>();
+
     [Header("Set Dynamically")]
     public int                  currentSongNdx;
 
@@ -67,14 +77,17 @@ public class AudioManager : MonoBehaviour {
             case eSFXAudioClipName.death:
                 deathAS.Play();
                 break;
+            case eSFXAudioClipName.grabCoin:
+                grabCoinAS.Play();
+                break;
+            case eSFXAudioClipName.grabCoinLevelUp:
+                grabCoinLevelUpAS.Play();
+                break;
             case eSFXAudioClipName.grabHanger:
                 grabHangerAS.Play();
                 break;
-            case eSFXAudioClipName.grabItem:
-                grabItemAS.Play();
-                break;
-            case eSFXAudioClipName.grabItemLevelUp:
-                grabItemLevelUpAS.Play();
+            case eSFXAudioClipName.grabShield:
+                grabShieldAS.Play();
                 break;
             case eSFXAudioClipName.pause:
                 pauseAS.Play();
@@ -108,6 +121,26 @@ public class AudioManager : MonoBehaviour {
             case eBGMAudioClipName.gameOver: bgmAS[4].Play(); break;
             case eBGMAudioClipName.newHighScore: bgmAS[5].Play(); break;
         }
+    }
+
+    public void PlayVOXClip(eVOX VOXName) {
+        AudioClip clip = voxClips[(int)VOXName];
+        VOXAudioSource.clip = clip;
+        VOXAudioSource.Play();
+    }
+
+    //
+    public void PlayVOXExclamationClip(int ndx) {
+        AudioClip clip = voxExclamationClips[ndx];
+        VOXAudioSource.clip = clip;
+        VOXAudioSource.Play();
+    }
+
+    //
+    public void PlayVOXInterjectionClip(int ndx) {
+        AudioClip clip = voxInterjectionClips[ndx];
+        VOXAudioSource.clip = clip;
+        VOXAudioSource.Play();
     }
 
     //// Plays a short jingle, then when it's over, resumes playback of the BGM that was playing previously

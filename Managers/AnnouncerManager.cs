@@ -42,26 +42,6 @@ public class AnnouncerManager : MonoBehaviour {
         PopulateRemainingInterjectionNdxs();
     }
 
-    // Functions to announce game events from outside of this script
-    public void DisplayRandomExclamation() {
-        DisplayText(GetRandomExclamation() + "!", Color.yellow);
-    }
-    public void DisplayRandomInterjection() {
-        DisplayText(GetRandomInterjection() + "!", Color.red);
-    }
-    public void DisplayShield() {
-        DisplayText("SHIELD" + "!", Color.blue);
-    }
-    public void DisplayNextLevel() {
-        DisplayText("NEXT LEVEL" + "!", Color.white);
-    }
-    public void DisplayGameOver() {
-        DisplayText("GAME OVER" + "!", Color.red);
-    }
-    public void DisplayAmountToNextLevel() {
-        DisplayText(ScoreManager.S.amountToNextLevel + "\nTO GO!", ColorManager.S.alleyMaterial1.color, false);
-    }
-
     // Set text and color of announcer UI text game object
     void DisplayText(string message, Color textColor, bool announceAmountToNextLevel = true) {
         announcerText.color = textColor;
@@ -72,8 +52,56 @@ public class AnnouncerManager : MonoBehaviour {
         }
     }
 
+    // Functions to announce game events from outside of this script
+    public void DisplayRandomExclamation() {
+        DisplayText(GetRandomExclamation() + "!", Color.yellow);
+    }
+    public void DisplayRandomInterjection() {
+        DisplayText(GetRandomInterjection() + "!", Color.red);
+    }
+    public void DisplayShield() {
+        DisplayText("SHIELD" + "!", Color.blue);
+
+        // Play SFX
+        AudioManager.S.PlayVOXClip(eVOX.voxShield);
+    }
+    public void DisplayNextLevel() {
+        DisplayText("NEXT LEVEL" + "!", Color.white);
+
+        // Play SFX
+        AudioManager.S.PlayVOXClip(eVOX.voxNextLevel);
+    }
+    public void DisplayGameOver() {
+        DisplayText("GAME OVER" + "!", Color.red);
+
+        // Play SFX
+        AudioManager.S.PlayVOXClip(eVOX.voxGameOver);
+    }
+    public void DisplayAmountToNextLevel() {
+        DisplayText(ScoreManager.S.amountToNextLevel + "\nTO GO!", ColorManager.S.alleyMaterial1.color, false);
+
+        // Play SFX
+        switch (ScoreManager.S.amountToNextLevel) {
+            case 1:
+                AudioManager.S.PlayVOXClip(eVOX.vox1ToGo);
+                break;
+            case 2:
+                AudioManager.S.PlayVOXClip(eVOX.vox2ToGo);
+                break;
+            case 3:
+                AudioManager.S.PlayVOXClip(eVOX.vox3ToGo);
+                break;
+            case 4:
+                AudioManager.S.PlayVOXClip(eVOX.vox4ToGo);
+                break;
+            case 5:
+                AudioManager.S.PlayVOXClip(eVOX.vox5ToGo);
+                break;
+        }
+    }
+
     // Returns a random positive word or phrase
-    string GetRandomExclamation() {
+    string GetRandomExclamation(bool playVOX = true) {
         // If empty, repopulate list of remaining indexes
         if (remainingExclamationNdxs.Count <= 0) {
             PopulateRemainingExclamationNdxs();
@@ -85,6 +113,11 @@ public class AnnouncerManager : MonoBehaviour {
         // Get exclamation index
         int exclamationNdx = remainingExclamationNdxs[remainingExclamationNdx];
 
+        // Play VOX audio clip
+        if (playVOX) {
+            AudioManager.S.PlayVOXExclamationClip(exclamationNdx);
+        }
+
         // Remove remaining exclamation from list
         remainingExclamationNdxs.RemoveAt(remainingExclamationNdx);
 
@@ -93,7 +126,7 @@ public class AnnouncerManager : MonoBehaviour {
     }
 
     // Returns a random negative word or phrase
-    string GetRandomInterjection() {
+    string GetRandomInterjection(bool playVOX = true) {
         // If empty, repopulate list of remaining indexes
         if (remainingInterjectionNdxs.Count <= 0) {
             PopulateRemainingInterjectionNdxs();
@@ -104,6 +137,11 @@ public class AnnouncerManager : MonoBehaviour {
 
         // Get interjection index
         int interjectionNdx = remainingInterjectionNdxs[remainingInterjectionNdx];
+
+        // Play VOX audio clip
+        if (playVOX) {
+            AudioManager.S.PlayVOXInterjectionClip(interjectionNdx);
+        }
 
         // Remove remaining interjection from list
         remainingInterjectionNdxs.RemoveAt(remainingInterjectionNdx);

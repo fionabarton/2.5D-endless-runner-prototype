@@ -47,6 +47,9 @@ public class MainMenu : MonoBehaviour {
 
         // Play BGM
         AudioManager.S.PlayBGM(eBGMAudioClipName.gameplay);
+
+        // Announce "let's go!"
+        AnnouncerManager.S.DisplayLetsGo();
     }
 
     public void StopGame() {

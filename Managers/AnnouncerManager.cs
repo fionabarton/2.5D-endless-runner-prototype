@@ -47,6 +47,7 @@ public class AnnouncerManager : MonoBehaviour {
         announcerText.color = textColor;
         announcerText.text = message;
 
+        // In 2 seconds, announce amount to next level
         if (announceAmountToNextLevel) {
             Invoke("DisplayAmountToNextLevel", 2);
         }
@@ -58,6 +59,15 @@ public class AnnouncerManager : MonoBehaviour {
     }
     public void DisplayRandomInterjection() {
         DisplayText(GetRandomInterjection() + "!", Color.red);
+    }
+    public void DisplayLetsGo() {
+        DisplayText("LET'S GO" + "!", ColorManager.S.alleyMaterial1.color, false);
+
+        // Play SFX
+        AudioManager.S.PlayVOXClip(eVOX.voxLetsGo);
+
+        // In 2 seconds, announce amount to next level
+        Invoke("DisplayAmountToNextLevel", 2);
     }
     public void DisplayShield() {
         DisplayText("SHIELD" + "!", Color.blue);

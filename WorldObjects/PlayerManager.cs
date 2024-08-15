@@ -461,9 +461,6 @@ public class PlayerManager : MonoBehaviour {
 
     // End the game and reset all changed values to their default settings
     public void GameOver() {
-        // Freeze player
-        SetMobility(false);
-
         // Reset shield & starting position
         DeactivateShield();
         MoveToStartingPosition();
@@ -479,6 +476,12 @@ public class PlayerManager : MonoBehaviour {
 
         // Stop game and reactivate main menu
         MainMenu.S.StopGame();
+
+        // Freeze player
+        SetMobility(false);
+
+        // Set mode
+        Idle();
 
         StopAllCoroutines();
     }

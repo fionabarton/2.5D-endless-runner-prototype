@@ -22,4 +22,20 @@ public class OnCollisionPlaySFX : MonoBehaviour {
             }
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        // If tag of (other) GameObject matches (tagName)...
+        for (int i = 0; i < tagNames.Count; i++) {
+            if (collision.gameObject.tag == tagNames[i]) {
+                AudioSource audio = collision.gameObject.GetComponent<AudioSource>();
+                if (audio) {
+                    // Set volume to current SFX volume
+                    //audio.volume = ...
+
+                    // Play audio
+                    audio.Play();
+                }
+            }
+        }
+    }
 }

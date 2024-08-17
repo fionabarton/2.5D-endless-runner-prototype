@@ -37,6 +37,9 @@ public class AudioManager : MonoBehaviour {
     public List<AudioClip>      voxInterjectionClips = new List<AudioClip>();
 
     [Header("Set Dynamically")]
+    public float                previousVolumeLvl;
+    public bool                 isMuted;
+
     public int                  currentSongNdx;
 
     // Singleton
@@ -141,6 +144,35 @@ public class AudioManager : MonoBehaviour {
         AudioClip clip = voxInterjectionClips[ndx];
         VOXAudioSource.clip = clip;
         VOXAudioSource.Play();
+    }
+
+    //public void PauseAndMuteAudio() {
+    //    // Pause and mute
+    //    if (!isMuted) {
+    //        previousVolumeLvl = AudioListener.volume;
+    //        AudioListener.volume = 0;
+    //        isMuted = true;
+
+    //        // Save settings
+    //        PlayerPrefs.SetInt("Mute Audio", 0);
+    //    // Unpause and unmute
+    //    } else {
+    //        AudioListener.volume = previousVolumeLvl;
+    //        isMuted = false;
+
+    //        // Save settings
+    //        PlayerPrefs.SetInt("Mute Audio", 1);
+    //    }
+    //}
+
+    public void SetMasterVolume(float volume) {
+        AudioListener.volume = volume;
+
+        // Set previous volume level
+        previousVolumeLvl = volume;
+
+        // Save settings
+        PlayerPrefs.SetFloat("Master Volume", volume);
     }
 
     //// Plays a short jingle, then when it's over, resumes playback of the BGM that was playing previously

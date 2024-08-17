@@ -42,7 +42,7 @@ public class ScoreManager : MonoBehaviour {
 
     // Add one point to the user's score and update scoreboard UI
     public void AddToScore() {
-        // Increment score and update UI
+        // Increment score and update local UI
         score += 1;
         UpdateGUI();
 
@@ -111,6 +111,9 @@ public class ScoreManager : MonoBehaviour {
         } else {
             ColorManager.S.ResetPalette();
         }
+
+        // Update main menu UI
+        MainMenu.S.UpdateUI();
     }
 
     // Get and return total time in '00:00:00:000' format

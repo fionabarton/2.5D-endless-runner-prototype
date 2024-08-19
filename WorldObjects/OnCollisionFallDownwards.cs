@@ -13,10 +13,10 @@ public class OnCollisionFallDownwards : MonoBehaviour {
         // If tag of (other) GameObject matches (tagName)...
         if (other.gameObject.tag == tagName) {
             if (isObstacle) {
-                // Stop object movement
-                TranslateForward tf = GetComponent<TranslateForward>();
-                if (tf) {
-                    tf.isMoving = false;
+                // Redirect object movement downwards
+                TranslateObject to = GetComponent<TranslateObject>();
+                if (to) {
+                    to.SetDirection(Vector3.down);
                 }
 
                 // Destroy over time
@@ -26,15 +26,15 @@ public class OnCollisionFallDownwards : MonoBehaviour {
                 }
 
                 // Activate object gravity, resulting in it falling downwards
-                Rigidbody rb = GetComponent<Rigidbody>();
-                if (rb) {
-                    rb.useGravity = true;
-                }
+                //Rigidbody rb = GetComponent<Rigidbody>();
+                //if (rb) {
+                //    rb.useGravity = true;
+                //}
             } else {
-                // Stop object movement
-                TranslateForward tf = GetComponentInParent<TranslateForward>();
-                if (tf) {
-                    tf.isMoving = false;
+                // Redirect object movement downwards
+                TranslateObject to = GetComponentInParent<TranslateObject>();
+                if (to) {
+                    to.SetDirection(Vector3.down);
                 }
 
                 // Destroy over time
@@ -44,10 +44,10 @@ public class OnCollisionFallDownwards : MonoBehaviour {
                 }
 
                 // Activate object gravity, resulting in it falling downwards
-                Rigidbody rb = GetComponent<Rigidbody>();
-                if (rb) {
-                    rb.useGravity = true;
-                }
+                //Rigidbody rb = GetComponent<Rigidbody>();
+                //if (rb) {
+                //    rb.useGravity = true;
+                //}
             }
         } 
     }

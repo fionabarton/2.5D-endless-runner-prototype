@@ -50,7 +50,7 @@ public class AnnouncerManager : MonoBehaviour {
         // In 2 seconds, announce amount to next level
         if (announceAmountToNextLevel) {
             Invoke("DisplayAmountToNextLevel", 2);
-        }
+        } 
     }
 
     // Functions to announce game events from outside of this script
@@ -82,10 +82,13 @@ public class AnnouncerManager : MonoBehaviour {
         AudioManager.S.PlayVOXClip(eVOX.voxNextLevel);
     }
     public void DisplayGameOver() {
-        DisplayText("GAME OVER" + "!", Color.red);
+        DisplayText("GAME OVER" + "!", Color.red, false);
 
         // Play SFX
         AudioManager.S.PlayVOXClip(eVOX.voxGameOver);
+
+        // Cancel all invoke calls
+        CancelInvoke();
     }
     public void DisplayAmountToNextLevel() {
         DisplayText(ScoreManager.S.amountToNextLevel + "\nTO GO!", ColorManager.S.alleyMaterial1.color, false);

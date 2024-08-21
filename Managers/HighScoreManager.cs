@@ -5,11 +5,14 @@ using UnityEngine;
 // Handles creating and adjusting entries on the high score leaderboard.
 public class HighScoreManager : MonoBehaviour {
     [Header("Set Dynamically")]
-    public HighScore[]  entries;
+    public HighScore[] highScores;
 
     public List<string> names = new List<string>();
 
     [Header("Set Dynamically")]
+    // Index at which to store a new HighScore in the 'highScores' array
+    public int newHighScoreNdx = -1;
+
     // Single instance of this class, which provides global acess from other scripts
     private static HighScoreManager _S;
     public static HighScoreManager S { get { return _S; } set { _S = value; } }
@@ -34,10 +37,76 @@ public class HighScoreManager : MonoBehaviour {
             "Agatha", "Jasper", "Hester", "Amos", "Hazel", "Rollo", "Agnes", "Demetrius", "Pollyanna", "Tobias" };
 
         // Initialize array of high scores
-        entries = new HighScore[100];
+        highScores = new HighScore[100];
 
         //
         SetHighScoresToDefaultValues();
+    }
+
+    // Checks if the score is a new high score,
+    // then returns at what index it belongs in the highScores array
+    public bool CheckForNewHighScore(int score) {
+        // Load data
+        //GameManager.save.Load();
+
+        for (int i = 0; i < highScores.Length; i++) {
+            if (score > highScores[i].score) {
+                // Set newHighScoreNdx
+                newHighScoreNdx = i;
+
+                // Set currentPageNdx
+                if (newHighScoreNdx <= 9) {
+                    HighScoreMenu.S.currentPageNdx = 0;
+                } else if (newHighScoreNdx >= 89) {
+                    HighScoreMenu.S.currentPageNdx = 9;
+                } else {
+                    int tInt = newHighScoreNdx / 10;
+                    HighScoreMenu.S.currentPageNdx = tInt % 10;
+                }
+
+                // 
+                HighScoreMenu.S.newHighScorePageNdx = HighScoreMenu.S.currentPageNdx;
+
+                // Set newHighScoreListNdx
+                HighScoreMenu.S.newHighScoreListNdx = newHighScoreNdx % 10;
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //
+    public void AddNewHighScore(HighScore newScore) {
+        // Initialize new array
+        HighScore[] tScores = new HighScore[100];
+
+        // Set higher scores that will not change position
+        for (int i = 0; i < newHighScoreNdx; i++) {
+            tScores[i] = highScores[i];
+        }
+
+        // Set new score
+        tScores[newHighScoreNdx] = newScore;
+
+        // Set lower scores that will shift position to the right by 1
+        for (int i = newHighScoreNdx + 1; i < highScores.Length; i++) {
+            tScores[i] = highScores[i - 1];
+        }
+
+        // 
+        highScores = tScores;
+
+        // Save data
+        //GameManager.save.Save();
+
+        //
+        HighScoreMenu.S.UpdateHighScoreDisplay(HighScoreMenu.S.currentPageNdx);
+
+        //GameManager.S.selectedHighScoreMenuCS.DisplaySelectedHighScoreEntryData(newHighScoreNdx, true);
+
+        // Reset score for next game
+        //GameManager.S.score.ResetScore();
     }
 
     // Deletes all saved high scores and resets them to default values 
@@ -46,8 +115,8 @@ public class HighScoreManager : MonoBehaviour {
         int highestScore = 75;
         int highestObjects = 200;
         int highestTime = 360;
-        for (int i = 0; i < entries.Length; i++) {
-            entries[i] = new HighScore(names[i], highestScore, (int)((highestScore * 0.2f) + 1), highestObjects, ScoreManager.S.GetTime(highestTime));
+        for (int i = 0; i < highScores.Length; i++) {
+            highScores[i] = new HighScore(names[i], highestScore, (int)((highestScore * 0.2f) + 1), highestObjects, ScoreManager.S.GetTime(highestTime));
 
             // Decrement topScore
             if (highestScore > 1) {

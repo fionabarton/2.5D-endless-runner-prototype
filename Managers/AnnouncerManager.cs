@@ -90,6 +90,12 @@ public class AnnouncerManager : MonoBehaviour {
         // Cancel all invoke calls
         CancelInvoke();
     }
+    public void DisplayNewHighScore() {
+        DisplayText("NEW HIGH SCORE" + "!", ColorManager.S.alleyMaterial1.color, false);
+
+        // Play SFX
+        AudioManager.S.PlayVOXClip(eVOX.voxNewHighScore);
+    }
     public void DisplayAmountToNextLevel() {
         DisplayText(ScoreManager.S.amountToNextLevel + "\nTO GO!", ColorManager.S.alleyMaterial1.color, false);
 

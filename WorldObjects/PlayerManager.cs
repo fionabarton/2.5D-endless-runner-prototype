@@ -415,7 +415,6 @@ public class PlayerManager : MonoBehaviour {
                         break;
                 }
             }
-        
     }
 
     // Set player scale on x-axis to its additive inverse,
@@ -451,39 +450,14 @@ public class PlayerManager : MonoBehaviour {
     }
 
     // Deactivate the player's shield after colliding with a red obstacle
-    public void DeactivateShield() {
+    public void DeactivateShield(bool isGameOver = false) {
         shield.SetActive(false);
         isShielded = false;
 
         // Display text of a random interjection
-        AnnouncerManager.S.DisplayRandomInterjection();
-    }
-
-    // End the game and reset all changed values to their default settings
-    public void GameOver() {
-        // Reset shield & starting position
-        DeactivateShield();
-        MoveToStartingPosition();
-
-        // Display text that the game has ended
-        AnnouncerManager.S.DisplayGameOver();
-
-        // Find and destroy all moving objects (obstacles, coins, & shields)
-        GameManager.S.DestroyAllObjects();
-
-        // Play SFX
-        AudioManager.S.PlaySFX(eSFXAudioClipName.death);
-
-        // Stop game and reactivate main menu
-        MainMenu.S.StopGame();
-
-        // Freeze player
-        SetMobility(false);
-
-        // Set mode
-        Idle();
-
-        StopAllCoroutines();
+        if (isGameOver) {
+            AnnouncerManager.S.DisplayRandomInterjection();
+        }
     }
 
     //
@@ -512,6 +486,76 @@ public class PlayerManager : MonoBehaviour {
         if (!isMobile) {
             rigid.velocity = Vector3.zero;
         }
+    }
+
+    // End the game and reset all changed values to their default settings
+    public void GameOver() {
+        // Check for high score
+        if (HighScoreManager.S.CheckForNewHighScore(ScoreManager.S.score)) {
+            // 
+            Invoke("AnnounceHighScore", 2.5f);
+        } else {
+            //
+            Invoke("ActivateMainMenu", 2.5f);
+        }
+
+        // Display text that the game has ended
+        AnnouncerManager.S.DisplayGameOver();
+
+        // Find and destroy all moving objects (obstacles, coins, & shields)
+        GameManager.S.DestroyAllObjects();
+
+        // Play SFX
+        AudioManager.S.PlaySFX(eSFXAudioClipName.death);
+
+        // Stop objects from spawning
+        ObjectSpawner.S.isSpawning = false;
+
+        // Reset shield & starting position
+        DeactivateShield();
+        MoveToStartingPosition();
+
+        // Freeze player
+        SetMobility(false);
+
+        // Set mode
+        Idle();
+    }
+
+    //
+    void AnnounceHighScore() {
+        // Play confetti particle systems
+        ConfettiManager.S.DropConfetti();
+
+        // Set display text colors
+        //GameManager.color.SetDisplayTextPalette();
+
+        // Display text & play VOX audio clip
+        AnnouncerManager.S.DisplayNewHighScore();
+
+        // Play BGM: Win
+        AudioManager.S.PlayBGM(eBGMAudioClipName.newHighScore);
+
+        //
+        Invoke("ActivateKeyboardMenu", 2.5f);
+    }
+
+    //
+    void ActivateKeyboardMenu() {
+        // Activate keyboard input menu
+        KeyboardInputMenu.S.Activate("NameHighScoreEntry");
+
+        // Play BGM: 1940
+        AudioManager.S.PlayBGM(eBGMAudioClipName.highScoreMenu);
+    }
+
+    //
+    void ActivateMainMenu() {
+        // Reset score for next game
+        //GameManager.S.score.ResetScore();
+
+        // Activate main menu
+        MainMenu.S.Activate(true);
     }
 
     //public IEnumerator WaitToResetPlayerMode() { 

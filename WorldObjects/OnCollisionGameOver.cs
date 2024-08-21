@@ -27,7 +27,7 @@ public class OnCollisionGameOver : MonoBehaviour {
                 PlayerManager.S.Damaged();
 
                 // ...deactivate the player's shield
-                PlayerManager.S.DeactivateShield();
+                PlayerManager.S.DeactivateShield(true);
             } 
         }
     }

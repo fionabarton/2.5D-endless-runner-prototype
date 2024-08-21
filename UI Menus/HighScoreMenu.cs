@@ -17,6 +17,10 @@ public class HighScoreMenu : MonoBehaviour {
     public Button       nextPageButton;
     public Button       goBackButton;
 
+    // Index at which the new HighScore is displayed in the list of 10 displayed scores
+    public int          newHighScoreListNdx = -1;
+    public int          newHighScorePageNdx = -1;
+
     public int          currentPageNdx = 0;
 
     [Header("Set Dynamically")]
@@ -104,11 +108,11 @@ public class HighScoreMenu : MonoBehaviour {
 
             // Set lists of text
             rankText[i].text = (startingNdx + i + 1).ToString() + rankSuffix;
-            nameText[i].text = HighScoreManager.S.entries[startingNdx + i].name;
-            scoreText[i].text = HighScoreManager.S.entries[startingNdx + i].score.ToString();
-            levelText[i].text = HighScoreManager.S.entries[startingNdx + i].level.ToString();
-            objectsText[i].text = HighScoreManager.S.entries[startingNdx + i].objects.ToString();
-            runTimeText[i].text = HighScoreManager.S.entries[startingNdx + i].runTime;
+            nameText[i].text = HighScoreManager.S.highScores[startingNdx + i].name;
+            scoreText[i].text = HighScoreManager.S.highScores[startingNdx + i].score.ToString();
+            levelText[i].text = HighScoreManager.S.highScores[startingNdx + i].level.ToString();
+            objectsText[i].text = HighScoreManager.S.highScores[startingNdx + i].objects.ToString();
+            runTimeText[i].text = HighScoreManager.S.highScores[startingNdx + i].runTime;
 
             // Reset text color
             //SetHighScoreColors(i, "RainbowTextWhite");

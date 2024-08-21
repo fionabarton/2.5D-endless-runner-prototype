@@ -55,11 +55,9 @@ public class MainMenu : MonoBehaviour {
         AnnouncerManager.S.DisplayLetsGo();
     }
 
-    public void StopGame() {
-        // Stop objects from spawning
-        ObjectSpawner.S.isSpawning = false;
-
+    public void Activate(bool calledOnNewHighScore = false) {
         // Play BGM
+        if(!calledOnNewHighScore)
         AudioManager.S.PlayBGM(eBGMAudioClipName.mainMenu);
 
         // Activate main menu

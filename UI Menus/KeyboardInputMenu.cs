@@ -114,7 +114,7 @@ public class KeyboardInputMenu : MonoBehaviour {
                     //messageDisplay.DisplayText(GameManager.words.GetRandomExclamation() + "!\nYeah, you add that character!");
 
                     // Audio: Confirm
-                    //GameManager.audioMan.PlayUISFXClip(eSFX.sfxConfirm);
+                    AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedConfirm);
                 }
             }
         } else {
@@ -122,7 +122,7 @@ public class KeyboardInputMenu : MonoBehaviour {
             //messageDisplayAnim.CrossFade("DisplayTextShake", 0);
 
             // Audio: Damage
-            //GameManager.audioMan.PlayRandomDamageSFX();
+            AudioManager.S.PlaySFX(eSFXAudioClipName.damage);
 
             // Display text
             //messageDisplay.DisplayText(GameManager.words.GetRandomInterjection() + "!\nYou can't add anymore characters;\nthere's no more room left!");
@@ -148,7 +148,7 @@ public class KeyboardInputMenu : MonoBehaviour {
             //GameManager.utilities.PositionCursor(cursorGO, charSlotsText[inputString.Length].gameObject, 0, -160, 3);
 
             // Audio: Deny
-            //GameManager.audioMan.PlayUISFXClip(eSFX.sfxDeny);
+            AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedDeny);
 
             // Display text
             //messageDisplay.DisplayText(GameManager.words.GetRandomExclamation() + "!\nYeah, you delete that character!");
@@ -157,7 +157,7 @@ public class KeyboardInputMenu : MonoBehaviour {
             //messageDisplayAnim.CrossFade("DisplayTextShake", 0);
 
             // Audio: Damage
-            //GameManager.audioMan.PlayRandomDamageSFX();
+            AudioManager.S.PlaySFX(eSFXAudioClipName.damage);
 
             // Display text
             //messageDisplay.DisplayText(GameManager.words.GetRandomInterjection() + "!\nYou can't delete anymore characters;\nthere's nothing left to delete!");
@@ -192,7 +192,7 @@ public class KeyboardInputMenu : MonoBehaviour {
         //messageDisplay.DisplayText(GameManager.words.GetRandomExclamation() + "!\nNice choice!");
 
         // Audio: Confirm
-        //GameManager.audioMan.PlayUISFXClip(eSFX.sfxConfirm);
+        AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedConfirm);
     }
 
     public void GoBackButton() {
@@ -203,7 +203,7 @@ public class KeyboardInputMenu : MonoBehaviour {
     // - Sets high score entry name
     public void AddSetHighScoreEntryNameConfirmationListeners() {
         // Audio: Confirm
-        //GameManager.audioMan.PlayUISFXClip(eSFX.sfxConfirm);
+        AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedConfirm);
 
         //GameManager.S.subMenuCS.AddListeners(SetHighScoreEntryName, "Are you sure about this name?\nWell, are you?");
 
@@ -214,7 +214,7 @@ public class KeyboardInputMenu : MonoBehaviour {
     // - Sets custom algorithm entry name
     public void AddSetCustomAlgorithmEntryNameConfirmationListeners() {
         // Audio: Confirm
-        //GameManager.audioMan.PlayUISFXClip(eSFX.sfxConfirm);
+        AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedConfirm);
 
         //GameManager.S.subMenuCS.AddListeners(GameManager.S.customAlgorithmMenuCS.SaveAlgorithm, "Are you sure about this name?\nAND overwriting this custom game mode slot?\nWell, are you?");
     }

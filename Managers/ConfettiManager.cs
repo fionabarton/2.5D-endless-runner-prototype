@@ -6,7 +6,7 @@ using UnityEngine;
 public class ConfettiManager : MonoBehaviour {
     [Header("Set in Inspector")]
     public ParticleSystem       confettiPS;
-    //public ParticleSystem       fireworksPS;
+    public ParticleSystem       fireworksPS;
 
     // Single instance of this class, which provides global acess from other scripts
     private static ConfettiManager _S;
@@ -26,9 +26,9 @@ public class ConfettiManager : MonoBehaviour {
         //GameManager.audioMan.PlayApplauseSFXlip(loopAudio);
 
         // Play fireworks
-        //if (playFireworks) {
-        //    fireworksPS.Play();
-        //}
+        if (playFireworks) {
+            fireworksPS.Play();
+        }
     }
 
     // Sets whether all particle systems are looping or not
@@ -38,8 +38,8 @@ public class ConfettiManager : MonoBehaviour {
         confettiMain.loop = isLooping;
     
         // Loop fireworks
-        //var fireworksMain = fireworksPS.main;
-        //fireworksMain.loop = isLooping;
+        var fireworksMain = fireworksPS.main;
+        fireworksMain.loop = isLooping;
 
         // Stop looping applause SFX
         //if (!isLooping) {

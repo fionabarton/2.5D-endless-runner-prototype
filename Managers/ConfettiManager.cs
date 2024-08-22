@@ -23,7 +23,11 @@ public class ConfettiManager : MonoBehaviour {
         confettiPS.Play();
 
         // Play SFX
-        AudioManager.S.PlaySFX(eSFXAudioClipName.applauseLoop);
+        if (loopAudio) {
+            AudioManager.S.PlaySFX(eSFXAudioClipName.applauseLoop);
+        } else {
+            AudioManager.S.PlaySFX(eSFXAudioClipName.applause);
+        }
 
         // Play fireworks
         if (playFireworks) {

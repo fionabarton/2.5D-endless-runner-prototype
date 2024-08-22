@@ -525,7 +525,8 @@ public class PlayerManager : MonoBehaviour {
     //
     void AnnounceHighScore() {
         // Play confetti particle systems
-        ConfettiManager.S.DropConfetti();
+        ConfettiManager.S.IsLooping(true);
+        ConfettiManager.S.DropConfetti(true, true);
 
         // Set display text colors
         //GameManager.color.SetDisplayTextPalette();

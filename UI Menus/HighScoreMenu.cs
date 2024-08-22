@@ -46,14 +46,16 @@ public class HighScoreMenu : MonoBehaviour {
         Deactivate();
     }
 
-    public void ActivateMenu() {
+    public void ActivateMenu(bool playSFX) {
         // Activate this game object
         gameObject.SetActive(true);
 
         UpdateHighScoreDisplay();
 
         // Play BGM
-        AudioManager.S.PlayBGM(eBGMAudioClipName.highScoreMenu);
+        if (playSFX) {
+            AudioManager.S.PlayBGM(eBGMAudioClipName.highScoreMenu);
+        }
 
         //// Deactivate & remove all listeners from amountButtons
         //for (int i = 0; i < amountButtons.Count; i++) {

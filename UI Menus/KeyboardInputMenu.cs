@@ -247,7 +247,7 @@ public class KeyboardInputMenu : MonoBehaviour {
                 );
 
             // Activate selected high score menu
-            HighScoreMenu.S.ActivateMenu();
+            HighScoreMenu.S.ActivateMenu(false);
             MainMenu.S.Activate(true);
 
             // Update high score display

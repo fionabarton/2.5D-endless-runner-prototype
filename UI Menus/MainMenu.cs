@@ -28,7 +28,7 @@ public class MainMenu : MonoBehaviour {
         // Add listeners to buttons
         startGameButton.onClick.AddListener(delegate { StartGame(); });
         levelButton.onClick.AddListener(delegate { NumericalSelectionMenu.S.ActivateMenu(); });
-        highScoreMenuButton.onClick.AddListener(delegate { HighScoreMenu.S.ActivateMenu(); });
+        highScoreMenuButton.onClick.AddListener(delegate { HighScoreMenu.S.ActivateMenu(true); });
         optionsMenuButton.onClick.AddListener(delegate { OptionsMenu.S.ActivateMenu(); });
     }
 
@@ -57,8 +57,8 @@ public class MainMenu : MonoBehaviour {
 
     public void Activate(bool calledOnNewHighScore = false) {
         // Play BGM
-        if(!calledOnNewHighScore)
-        AudioManager.S.PlayBGM(eBGMAudioClipName.mainMenu);
+        //if(!calledOnNewHighScore)
+        //AudioManager.S.PlayBGM(eBGMAudioClipName.mainMenu);
 
         // Activate main menu
         gameObject.SetActive(true);

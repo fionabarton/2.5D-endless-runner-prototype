@@ -511,6 +511,9 @@ public class PlayerManager : MonoBehaviour {
         // Stop objects from spawning
         ObjectSpawner.S.isSpawning = false;
 
+        // Release from hanger
+        ReleaseHanger();
+
         // Reset shield & starting position
         DeactivateShield();
         MoveToStartingPosition();

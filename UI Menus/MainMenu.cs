@@ -30,6 +30,8 @@ public class MainMenu : MonoBehaviour {
         levelButton.onClick.AddListener(delegate { NumericalSelectionMenu.S.ActivateMenu(); });
         highScoreMenuButton.onClick.AddListener(delegate { HighScoreMenu.S.ActivateMenu(true); });
         optionsMenuButton.onClick.AddListener(delegate { OptionsMenu.S.ActivateMenu(); });
+
+        UpdateUI();
     }
 
     void StartGame() {

@@ -55,10 +55,11 @@ public class MainMenu : MonoBehaviour {
         AnnouncerManager.S.DisplayLetsGo();
     }
 
-    public void Activate(bool calledOnNewHighScore = false) {
+    public void Activate(bool playSFX) {
         // Play BGM
-        //if(!calledOnNewHighScore)
-        //AudioManager.S.PlayBGM(eBGMAudioClipName.mainMenu);
+        if (playSFX) {
+            AudioManager.S.PlayBGM(eBGMAudioClipName.mainMenu);
+        }
 
         // Activate main menu
         gameObject.SetActive(true);

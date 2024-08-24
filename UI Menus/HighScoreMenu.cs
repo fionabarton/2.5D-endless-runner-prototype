@@ -47,6 +47,9 @@ public class HighScoreMenu : MonoBehaviour {
     }
 
     public void ActivateMenu(bool playSFX) {
+        // Set main menu buttons interactacbility
+        MainMenu.S.ButtonsInteractable(false);
+
         // Set selected game object
         GameManager.S.SetSelectedGO(goBackButton.gameObject);
 
@@ -58,6 +61,9 @@ public class HighScoreMenu : MonoBehaviour {
         // Play BGM
         if (playSFX) {
             AudioManager.S.PlayBGM(eBGMAudioClipName.highScoreMenu);
+
+            // Audio: Confirm
+            AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedConfirm);
         }
 
         //// Deactivate & remove all listeners from amountButtons
@@ -88,10 +94,16 @@ public class HighScoreMenu : MonoBehaviour {
     void Deactivate(bool playMainMenuBGM = false) {
         if(playMainMenuBGM) {
             AudioManager.S.PlayBGM(eBGMAudioClipName.mainMenu);
+
+            // Audio: Confirm
+            AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedDeny);
         }
 
         // Stop particle systems from looping
         ConfettiManager.S.IsLooping(false);
+
+        // Set main menu buttons interactacbility
+        MainMenu.S.ButtonsInteractable(true);
 
         gameObject.SetActive(false);
     }
@@ -159,6 +171,13 @@ public class HighScoreMenu : MonoBehaviour {
             currentPageNdx = 0;
         } else if (currentPageNdx < 0) {
             currentPageNdx = 9;
+        }
+
+        // Play SFX
+        if (amountToChange == -1) {
+            AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedPrevious);
+        } else {
+            AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedNext);
         }
 
         UpdateHighScoreDisplay(currentPageNdx);

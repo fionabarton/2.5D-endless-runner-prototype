@@ -35,6 +35,9 @@ public class NumericalSelectionMenu : MonoBehaviour {
     }
 
     public void ActivateMenu() {
+        // Set main menu buttons interactacbility
+        MainMenu.S.ButtonsInteractable(false);
+
         // Activate this game object
         gameObject.SetActive(true);
 
@@ -52,6 +55,9 @@ public class NumericalSelectionMenu : MonoBehaviour {
         // Set selected game object
         GameManager.S.SetSelectedGO(amountButtons[0].gameObject);
 
+        // Audio: Confirm
+        AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedConfirm);
+
         // Set header text
         headerText.text = "Please select an amount!";
 
@@ -67,6 +73,12 @@ public class NumericalSelectionMenu : MonoBehaviour {
     }
 
     void Deactivate() {
+        // Set main menu buttons interactacbility
+        MainMenu.S.ButtonsInteractable(true);
+
+        // Audio: Confirm
+        AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedDeny);
+
         gameObject.SetActive(false);
     }
 }

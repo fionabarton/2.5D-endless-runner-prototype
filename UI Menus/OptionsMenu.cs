@@ -66,6 +66,9 @@ public class OptionsMenu : MonoBehaviour {
         // Activate this game object
         gameObject.SetActive(true);
 
+        // Audio: Confirm
+        AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedConfirm);
+
         // Play BGM
         AudioManager.S.PlayBGM(eBGMAudioClipName.optionsMenu);
     }
@@ -73,6 +76,9 @@ public class OptionsMenu : MonoBehaviour {
     void Deactivate(bool playMainMenuBGM = false) {
         if (playMainMenuBGM) {
             AudioManager.S.PlayBGM(eBGMAudioClipName.mainMenu);
+
+            // Audio: Confirm
+            AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedDeny);
         }
 
         // Set main menu buttons interactacbility
@@ -89,11 +95,17 @@ public class OptionsMenu : MonoBehaviour {
 
             // Save settings
             PlayerPrefs.SetInt("Mute Audio", 0);
+
+            // Play SFX
+            AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedPrevious);
         } else {
             muteAudioButtonText.text = "Mute Audio";
 
             // Save settings
             PlayerPrefs.SetInt("Mute Audio", 1);
+
+            // Play SFX
+            AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedNext);
         }
         AudioManager.S.PauseAndMuteAudio();
     }

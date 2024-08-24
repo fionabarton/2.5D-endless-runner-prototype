@@ -55,6 +55,9 @@ public class MainMenu : MonoBehaviour {
         // Set level
         ScoreManager.S.SetLevel(ScoreManager.S.startingLevel - 1);
 
+        // Audio: Confirm
+        AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedConfirm);
+
         // Play BGM
         AudioManager.S.PlayBGM(eBGMAudioClipName.gameplay);
 

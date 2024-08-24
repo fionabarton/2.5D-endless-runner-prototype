@@ -206,7 +206,7 @@ public class KeyboardInputMenu : MonoBehaviour {
     // - Sets high score entry name
     public void AddSetHighScoreEntryNameConfirmationListeners() {
         // Audio: Confirm
-        AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedConfirm);
+        AudioManager.S.PlaySFX(eSFXAudioClipName.grabCoin);
 
         //GameManager.S.subMenuCS.AddListeners(SetHighScoreEntryName, "Are you sure about this name?\nWell, are you?");
 
@@ -217,7 +217,7 @@ public class KeyboardInputMenu : MonoBehaviour {
     // - Sets custom algorithm entry name
     public void AddSetCustomAlgorithmEntryNameConfirmationListeners() {
         // Audio: Confirm
-        AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedConfirm);
+        AudioManager.S.PlaySFX(eSFXAudioClipName.grabCoin);
 
         //GameManager.S.subMenuCS.AddListeners(GameManager.S.customAlgorithmMenuCS.SaveAlgorithm, "Are you sure about this name?\nAND overwriting this custom game mode slot?\nWell, are you?");
     }
@@ -250,8 +250,8 @@ public class KeyboardInputMenu : MonoBehaviour {
                 );
 
             // Activate selected high score menu
-            HighScoreMenu.S.ActivateMenu(false);
             MainMenu.S.Activate(false);
+            HighScoreMenu.S.ActivateMenu(false);
 
             // Update high score display
             HighScoreManager.S.AddNewHighScore(newHighScore);

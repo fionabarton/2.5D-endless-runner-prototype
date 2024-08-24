@@ -112,6 +112,9 @@ public class ScoreManager : MonoBehaviour {
             ColorManager.S.ResetPalette();
         }
 
+        // Audio: Confirm
+        AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedConfirm);
+
         // Update main menu UI
         MainMenu.S.UpdateUI();
     }

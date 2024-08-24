@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum eBGMAudioClipName { mainMenu, optionsMenu, highScoreMenu, gameplay, gameOver, newHighScore };
-public enum eSFXAudioClipName { applause, applauseLoop, buttonPressedConfirm, buttonPressedDeny, buttonSelected, damage, death, grabCoin, grabCoinLevelUp, grabHanger, grabShield, pause, scream, unpause };
+public enum eSFXAudioClipName { applause, applauseLoop, buttonPressedConfirm, buttonPressedDeny, buttonSelected, buttonPressedPrevious, buttonPressedNext, damage, death, grabCoin, grabCoinLevelUp, grabHanger, grabShield, pause, scream, unpause };
 public enum eVOX {
     vox1, vox1ToGo, vox2, vox2ToGo, vox3, vox3ToGo, vox4ToGo, vox5ToGo, voxGameOver, voxGetReady, 
     voxGo, voxLetsGo, voxNewHighScore, voxNextLevel, voxShield, voxNull
@@ -18,6 +18,8 @@ public class AudioManager : MonoBehaviour {
     // SFX audio sources
     public AudioSource          applauseAS;
     public AudioSource          applauseLoopAS;
+    public AudioSource          buttonPressedPreviousAS;
+    public AudioSource          buttonPressedNextAS;
     public AudioSource          buttonPressedConfirmAS;
     public AudioSource          buttonPressedDenyAS;
     public AudioSource          buttonSelectedAS;
@@ -64,6 +66,12 @@ public class AudioManager : MonoBehaviour {
                 break;
             case eSFXAudioClipName.applauseLoop:
                 applauseLoopAS.Play();
+                break;
+            case eSFXAudioClipName.buttonPressedPrevious:
+                buttonPressedPreviousAS.Play();
+                break;
+            case eSFXAudioClipName.buttonPressedNext:
+                buttonPressedNextAS.Play();
                 break;
             case eSFXAudioClipName.buttonPressedConfirm:
                 buttonPressedConfirmAS.Play();
@@ -146,24 +154,24 @@ public class AudioManager : MonoBehaviour {
         VOXAudioSource.Play();
     }
 
-    //public void PauseAndMuteAudio() {
-    //    // Pause and mute
-    //    if (!isMuted) {
-    //        previousVolumeLvl = AudioListener.volume;
-    //        AudioListener.volume = 0;
-    //        isMuted = true;
+    public void PauseAndMuteAudio() {
+        // Pause and mute
+        if (!isMuted) {
+            previousVolumeLvl = AudioListener.volume;
+            AudioListener.volume = 0;
+            isMuted = true;
 
-    //        // Save settings
-    //        PlayerPrefs.SetInt("Mute Audio", 0);
-    //    // Unpause and unmute
-    //    } else {
-    //        AudioListener.volume = previousVolumeLvl;
-    //        isMuted = false;
+            // Save settings
+            PlayerPrefs.SetInt("Mute Audio", 0);
+            // Unpause and unmute
+        } else {
+            AudioListener.volume = previousVolumeLvl;
+            isMuted = false;
 
-    //        // Save settings
-    //        PlayerPrefs.SetInt("Mute Audio", 1);
-    //    }
-    //}
+            // Save settings
+            PlayerPrefs.SetInt("Mute Audio", 1);
+        }
+    }
 
     public void SetMasterVolume(float volume) {
         AudioListener.volume = volume;
@@ -173,6 +181,9 @@ public class AudioManager : MonoBehaviour {
 
         // Save settings
         PlayerPrefs.SetFloat("Master Volume", volume);
+
+        // Play SFX
+        PlaySFX(eSFXAudioClipName.buttonPressedConfirm);
     }
 
     //// Plays a short jingle, then when it's over, resumes playback of the BGM that was playing previously

@@ -47,6 +47,9 @@ public class HighScoreMenu : MonoBehaviour {
     }
 
     public void ActivateMenu(bool playSFX) {
+        // Set selected game object
+        GameManager.S.SetSelectedGO(goBackButton.gameObject);
+
         // Activate this game object
         gameObject.SetActive(true);
 
@@ -86,6 +89,9 @@ public class HighScoreMenu : MonoBehaviour {
         if(playMainMenuBGM) {
             AudioManager.S.PlayBGM(eBGMAudioClipName.mainMenu);
         }
+
+        // Stop particle systems from looping
+        ConfettiManager.S.IsLooping(false);
 
         gameObject.SetActive(false);
     }

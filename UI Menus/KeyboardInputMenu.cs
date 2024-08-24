@@ -53,6 +53,9 @@ public class KeyboardInputMenu : MonoBehaviour {
         // Remove listeners
         okButtonCS.onClick.RemoveAllListeners();
 
+        // Set selected game object
+        GameManager.S.SetSelectedGO(okButtonGO);
+
         // Activated here in order to ensure that following display text code below gets a chance to run
         gameObject.SetActive(true);
 

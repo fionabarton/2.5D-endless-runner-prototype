@@ -57,6 +57,9 @@ public class OptionsMenu : MonoBehaviour {
     }
 
     public void ActivateMenu() {
+        // Set selected game object
+        GameManager.S.SetSelectedGO(masterVolSlider.gameObject);
+
         // Activate this game object
         gameObject.SetActive(true);
 

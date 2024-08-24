@@ -63,6 +63,9 @@ public class MainMenu : MonoBehaviour {
             AudioManager.S.PlayBGM(eBGMAudioClipName.mainMenu);
         }
 
+        // Set selected game object
+        GameManager.S.SetSelectedGO(startGameButton.gameObject);
+
         // Activate main menu
         gameObject.SetActive(true);
     }

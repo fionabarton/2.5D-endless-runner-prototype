@@ -49,6 +49,9 @@ public class NumericalSelectionMenu : MonoBehaviour {
             amountButtons[i].gameObject.SetActive(true);
         }
 
+        // Set selected game object
+        GameManager.S.SetSelectedGO(amountButtons[0].gameObject);
+
         // Set header text
         headerText.text = "Please select an amount!";
 

@@ -57,6 +57,9 @@ public class OptionsMenu : MonoBehaviour {
     }
 
     public void ActivateMenu() {
+        // Set main menu buttons interactacbility
+        MainMenu.S.ButtonsInteractable(false);
+
         // Set selected game object
         GameManager.S.SetSelectedGO(masterVolSlider.gameObject);
 
@@ -71,6 +74,9 @@ public class OptionsMenu : MonoBehaviour {
         if (playMainMenuBGM) {
             AudioManager.S.PlayBGM(eBGMAudioClipName.mainMenu);
         }
+
+        // Set main menu buttons interactacbility
+        MainMenu.S.ButtonsInteractable(true);
 
         gameObject.SetActive(false);
     }

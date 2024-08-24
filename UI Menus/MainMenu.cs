@@ -11,6 +11,8 @@ public class MainMenu : MonoBehaviour {
     public Button                   highScoreMenuButton;
     public Button                   optionsMenuButton;
 
+    public List<Button>             buttons = new List<Button>();
+
     public TMPro.TextMeshProUGUI    levelValueText;
 
 
@@ -30,6 +32,9 @@ public class MainMenu : MonoBehaviour {
         levelButton.onClick.AddListener(delegate { NumericalSelectionMenu.S.ActivateMenu(); });
         highScoreMenuButton.onClick.AddListener(delegate { HighScoreMenu.S.ActivateMenu(true); });
         optionsMenuButton.onClick.AddListener(delegate { OptionsMenu.S.ActivateMenu(); });
+
+        // Cache reference to all menu buttons 
+        buttons = new List<Button>() { startGameButton, levelButton, highScoreMenuButton, optionsMenuButton };
 
         UpdateUI();
     }
@@ -68,6 +73,19 @@ public class MainMenu : MonoBehaviour {
 
         // Activate main menu
         gameObject.SetActive(true);
+    }
+
+    // Set whether buttons are interactable
+    public void ButtonsInteractable(bool isInteractable) {
+        startGameButton.interactable = isInteractable;
+        levelButton.interactable = isInteractable;
+        highScoreMenuButton.interactable = isInteractable;
+        optionsMenuButton.interactable = isInteractable;
+
+        if (isInteractable) {
+            // Set selected game object
+            GameManager.S.SetSelectedGO(startGameButton.gameObject);
+        }
     }
 
     // After level selection, update level, move, & spawn speed text values

@@ -75,4 +75,10 @@ public class GameManager : MonoBehaviour {
         Vector3 midpoint = object2.transform.position + (object1.transform.position - object2.transform.position) / 2;
         return midpoint;
     }
+
+    // Set Selected GameObject
+    public void SetSelectedGO(GameObject tGO) {
+        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
+        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(tGO);
+    }
 }

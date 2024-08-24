@@ -4,10 +4,13 @@ using UnityEngine;
 
 // Moves an object in a single, specified direction at a specified speed.
 public class TranslateObject : MonoBehaviour {
-    [Header("Set Dynamically")]
-    public bool     isMoving = true;
+    [Header("Set in Inspector")]
+    public Rigidbody    rigid;
 
-    public Vector3  direction = Vector3.forward;
+    [Header("Set Dynamically")]
+    public bool         isMoving = true;
+
+    public Vector3      direction = Vector3.forward;
 
     void FixedUpdate() {
         // Translate object towards desired direction
@@ -17,6 +20,9 @@ public class TranslateObject : MonoBehaviour {
     }
 
     public void SetDirection(Vector3 _direction) {
+        // Reset velocity
+        rigid.velocity = Vector3.zero;
+
         direction = _direction;
     }
 }

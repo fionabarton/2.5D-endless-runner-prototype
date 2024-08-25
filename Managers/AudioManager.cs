@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum eBGMAudioClipName { mainMenu, optionsMenu, highScoreMenu, gameplay, gameOver, newHighScore };
-public enum eSFXAudioClipName { applause, applauseLoop, buttonPressedConfirm, buttonPressedDeny, buttonSelected, buttonPressedPrevious, buttonPressedNext, damage, death, grabCoin, grabCoinLevelUp, grabHanger, grabShield, pause, scream, unpause };
+public enum eBGMAudioClipName { mainMenu, optionsMenu, highScoreMenu, gameplay, gameOver, newHighScore, volumeSliderValueChanged };
+public enum eSFXAudioClipName { applause, applauseLoop, buttonPressedConfirm, buttonPressedDeny, buttonSelected, buttonPressedPrevious, buttonPressedNext, damage, death, grabCoin, grabCoinLevelUp, grabHanger, grabShield, pause, scream, unpause, volumeSliderValueChanged };
 public enum eVOX {
     vox1, vox1ToGo, vox2, vox2ToGo, vox3, vox3ToGo, vox4ToGo, vox5ToGo, voxGameOver, voxGetReady, 
-    voxGo, voxLetsGo, voxNewHighScore, voxNextLevel, voxShield, voxNull
+    voxGo, voxLetsGo, voxNewHighScore, voxNextLevel, voxShield, voxNull, volumeSliderValueChanged
 };
 
 // Handles playing, stopping, or looping music and sound effects. 
@@ -32,8 +32,10 @@ public class AudioManager : MonoBehaviour {
     public AudioSource          pauseAS;
     public AudioSource          screamAS;
     public AudioSource          unpauseAS;
+    public AudioSource          SFXvolumeSliderValueChangedAS;
 
     public AudioSource          VOXAudioSource;
+    public AudioSource          VOXvolumeSliderValueChangedAS;
     public List<AudioClip>      voxClips = new List<AudioClip>();
     public List<AudioClip>      voxExclamationClips = new List<AudioClip>();
     public List<AudioClip>      voxInterjectionClips = new List<AudioClip>();
@@ -109,6 +111,9 @@ public class AudioManager : MonoBehaviour {
             case eSFXAudioClipName.unpause:
                 unpauseAS.Play();
                 break;
+            case eSFXAudioClipName.volumeSliderValueChanged:
+                SFXvolumeSliderValueChangedAS.Play();
+                break;
         }
     }
 
@@ -182,8 +187,57 @@ public class AudioManager : MonoBehaviour {
         // Save settings
         PlayerPrefs.SetFloat("Master Volume", volume);
 
-        // Play SFX
+        // Play audio
         PlaySFX(eSFXAudioClipName.buttonPressedConfirm);
+    }
+
+    public void SetBGMVolume(float volume) {
+        for(int i = 0; i < bgmAS.Count; i++) {
+            bgmAS[i].volume = volume;
+        }
+
+        // Save settings
+        PlayerPrefs.SetFloat("BGM Volume", volume);
+
+        // Play audio
+        bgmAS[6].Play();
+    }
+
+    public void SetSFXVolume(float volume) {
+        applauseAS.volume = volume;
+        applauseLoopAS.volume = volume;
+        buttonPressedPreviousAS.volume = volume;
+        buttonPressedNextAS.volume = volume;
+        buttonPressedConfirmAS.volume = volume;
+        buttonPressedDenyAS.volume = volume;
+        buttonSelectedAS.volume = volume;
+        damageAS.volume = volume;
+        deathAS.volume = volume;
+        grabCoinAS.volume = volume;
+        grabCoinLevelUpAS.volume = volume;
+        grabHangerAS.volume = volume;
+        grabShieldAS.volume = volume;
+        pauseAS.volume = volume;
+        screamAS.volume = volume;
+        unpauseAS.volume = volume;
+        SFXvolumeSliderValueChangedAS.volume = volume;
+
+        // Save settings
+        PlayerPrefs.SetFloat("SFX Volume", volume);
+
+        // Play audio
+        PlaySFX(eSFXAudioClipName.volumeSliderValueChanged);
+    }
+
+    public void SetVOXVolume(float volume) {
+        VOXAudioSource.volume = volume;
+        VOXvolumeSliderValueChangedAS.volume = volume;
+
+        // Save settings
+        PlayerPrefs.SetFloat("VOX Volume", volume);
+
+        // Play audio
+        VOXvolumeSliderValueChangedAS.Play();
     }
 
     //// Plays a short jingle, then when it's over, resumes playback of the BGM that was playing previously

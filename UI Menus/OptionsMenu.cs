@@ -7,6 +7,9 @@ using UnityEngine.UI;
 public class OptionsMenu : MonoBehaviour {
     [Header("Set in Inspector")]
     public Slider   masterVolSlider;
+    public Slider   BGMVolSlider;
+    public Slider   SFXVolSlider;
+    public Slider   VOXVolSlider;
 
     public Button   muteAudioButton;
     public Text     muteAudioButtonText;
@@ -26,6 +29,9 @@ public class OptionsMenu : MonoBehaviour {
     void Start() {
         // Add listeners to sliders
         masterVolSlider.onValueChanged.AddListener(delegate { AudioManager.S.SetMasterVolume((masterVolSlider.value)); });
+        BGMVolSlider.onValueChanged.AddListener(delegate { AudioManager.S.SetBGMVolume((BGMVolSlider.value)); });
+        SFXVolSlider.onValueChanged.AddListener(delegate { AudioManager.S.SetSFXVolume((SFXVolSlider.value)); });
+        VOXVolSlider.onValueChanged.AddListener(delegate { AudioManager.S.SetVOXVolume((VOXVolSlider.value)); });
         goBackButton.onClick.AddListener(delegate { Deactivate(true); });
 
         // Add listeners to buttons
@@ -46,6 +52,27 @@ public class OptionsMenu : MonoBehaviour {
             AudioManager.S.SetMasterVolume(masterVolSlider.value);
         } else {
             AudioManager.S.SetMasterVolume(0.25f);
+        }
+
+        if (PlayerPrefs.HasKey("BGM Volume")) {
+            BGMVolSlider.value = PlayerPrefs.GetFloat("BGM Volume");
+            AudioManager.S.SetBGMVolume(BGMVolSlider.value);
+        } else {
+            AudioManager.S.SetBGMVolume(0.45f);
+        }
+
+        if (PlayerPrefs.HasKey("SFX Volume")) {
+            SFXVolSlider.value = PlayerPrefs.GetFloat("SFX Volume");
+            AudioManager.S.SetSFXVolume(SFXVolSlider.value);
+        } else {
+            AudioManager.S.SetSFXVolume(0.65f);
+        }
+
+        if (PlayerPrefs.HasKey("VOX Volume")) {
+            VOXVolSlider.value = PlayerPrefs.GetFloat("VOX Volume");
+            AudioManager.S.SetVOXVolume(VOXVolSlider.value);
+        } else {
+            AudioManager.S.SetVOXVolume(0.45f);
         }
 
         if (PlayerPrefs.HasKey("Mute Audio")) {

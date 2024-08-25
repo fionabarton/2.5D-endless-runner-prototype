@@ -13,7 +13,9 @@ public class OptionsMenu : MonoBehaviour {
 
     public Button   muteAudioButton;
     public Text     muteAudioButtonText;
-    
+
+    public Button   resetSettingsButton;
+
     public Button   goBackButton;
 
     [Header("Set Dynamically")]
@@ -36,6 +38,7 @@ public class OptionsMenu : MonoBehaviour {
 
         // Add listeners to buttons
         muteAudioButton.onClick.AddListener(delegate { MuteAudioButton(); });
+        resetSettingsButton.onClick.AddListener(delegate { ResetMenuSettings(); });
 
         Invoke("OnStart", 0.1f);
     }
@@ -51,7 +54,7 @@ public class OptionsMenu : MonoBehaviour {
             masterVolSlider.value = PlayerPrefs.GetFloat("Master Volume");
             AudioManager.S.SetMasterVolume(masterVolSlider.value);
         } else {
-            AudioManager.S.SetMasterVolume(0.25f);
+            AudioManager.S.SetMasterVolume(0.5f);
         }
 
         if (PlayerPrefs.HasKey("BGM Volume")) {
@@ -120,20 +123,29 @@ public class OptionsMenu : MonoBehaviour {
         if (!AudioManager.S.isMuted) {
             muteAudioButtonText.text = "Unmute Audio";
 
-            // Save settings
-            PlayerPrefs.SetInt("Mute Audio", 0);
-
             // Play SFX
             AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedPrevious);
         } else {
             muteAudioButtonText.text = "Mute Audio";
 
-            // Save settings
-            PlayerPrefs.SetInt("Mute Audio", 1);
-
             // Play SFX
             AudioManager.S.PlaySFX(eSFXAudioClipName.buttonPressedNext);
         }
         AudioManager.S.PauseAndMuteAudio();
+    }
+
+    // Returns all menu settings to their default value
+    public void ResetMenuSettings() {
+        // Reset slider values
+        masterVolSlider.value = 0.5f;
+        BGMVolSlider.value = 0.45f;
+        SFXVolSlider.value = 0.65f;
+        VOXVolSlider.value = 0.45f;
+
+        // Reset mute
+        if (AudioManager.S.isMuted) {
+        AudioManager.S.PauseAndMuteAudio();
+        }
+        muteAudioButtonText.text = "Mute Audio";
     }
 }

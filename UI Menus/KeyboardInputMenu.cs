@@ -233,9 +233,9 @@ public class KeyboardInputMenu : MonoBehaviour {
             HighScore newHighScore = new HighScore(
                 inputString,
                 ScoreManager.S.score,
-                ScoreManager.S.level
-                //GameManager.S.score.objectCount,
-                //GameManager.S.score.GetTime(GameManager.S.score.endingTime),
+                ScoreManager.S.level,
+                ScoreManager.S.objectCount,
+                ScoreManager.S.GetTime(ScoreManager.S.endingTime)
                 //System.DateTime.UtcNow.ToString("dd MMMM, yyyy"),
                 //System.DateTime.UtcNow.ToString("HH:mm"),
                 //GameManager.alley.alleyCount,

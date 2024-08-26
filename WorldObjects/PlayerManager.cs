@@ -511,6 +511,9 @@ public class PlayerManager : MonoBehaviour {
         // Stop objects from spawning
         ObjectSpawner.S.isSpawning = false;
 
+        // Cache ending time
+        ScoreManager.S.endingTime = Time.time;
+
         // Release from hanger
         ReleaseHanger();
 

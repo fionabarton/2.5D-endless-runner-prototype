@@ -167,6 +167,9 @@ public class ObjectSpawner : MonoBehaviour {
 
                 // Cache previous object index
                 previousObjectNdx = currentObjectNdx;
+
+                // Add to object count
+                ScoreManager.S.AddToObjectCount();
             }
         }
     }

@@ -2,15 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 // Handles general game functionality such as scene management and pausing the game.
 public class GameManager : MonoBehaviour {
     [Header("Set Dynamically")]
     // Stores whether game is paused
-    public bool         paused;
+    //public bool         paused;
 
     // Transparent black image that covers entire screen when game paused
-    public GameObject   pauseBlackScreen;
+    //public GameObject   pauseBlackScreen;
+
+    // Selected GameObject
+    GameObject lastselect;
+
+    // Screen Resolution
+    Vector2 resolution;
 
     // Single instance of this class, which provides global acess from other scripts
     private static GameManager _S;
@@ -32,26 +39,47 @@ public class GameManager : MonoBehaviour {
             // Destroy this object
             Destroy(gameObject);
         }
+
+        // Disable mouse input
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
     }
 
-    void Update() {
-        // On 'p' key pressed...
-        if (Input.GetButtonDown("Pause")) {
-            if (!paused) {
-                // ...if not paused, pause game and freeze time scale.
-                paused = true;
-                Time.timeScale = 0.0f;
+    //void Update() {
+    //    // On 'p' key pressed...
+    //    if (Input.GetButtonDown("Pause")) {
+    //        if (!paused) {
+    //            // ...if not paused, pause game and freeze time scale.
+    //            paused = true;
+    //            Time.timeScale = 0.0f;
 
-                // Activate transparent black image covering entire screen
-                pauseBlackScreen.SetActive(true);     
-            } else {
-                // ...if paused, unpause game and reset time scale.
-                paused = false;
-                Time.timeScale = 1.0f;
+    //            // Activate transparent black image covering entire screen
+    //            pauseBlackScreen.SetActive(true);     
+    //        } else {
+    //            // ...if paused, unpause game and reset time scale.
+    //            paused = false;
+    //            Time.timeScale = 1.0f;
 
-                // Deactivate transparent black image covering entire screen
-                pauseBlackScreen.SetActive(false);               
-            }
+    //            // Deactivate transparent black image covering entire screen
+    //            pauseBlackScreen.SetActive(false);               
+    //        }
+    //    }
+    //}
+
+    void FixedUpdate() {
+        // If screen resolution changes...
+        if (resolution.x != Screen.width || resolution.y != Screen.height) {
+            // ... change screen width & height to update position/size of UI 
+            resolution.x = Screen.width;
+            resolution.y = Screen.height;
+        }
+
+        // Mouse input is disabled by deactivating Canvas > Graphic Raycaster...
+        // ...this handles if a left mouse click results in currently selected GO == null
+        if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == null) {
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(lastselect);
+        } else {
+            lastselect = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
         }
     }
 

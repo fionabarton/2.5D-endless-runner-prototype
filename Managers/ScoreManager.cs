@@ -9,10 +9,13 @@ public class ScoreManager : MonoBehaviour {
     [Header("Set in Inspector")]
     public TMPro.TextMeshProUGUI    scoreText;
     public TMPro.TextMeshProUGUI    levelText;
+    public TMPro.TextMeshProUGUI    objectSpawnCountText;
+    public TMPro.TextMeshProUGUI    runTimeText;
 
     [Header("Set Dynamically")]
     public int                      score = 0;
     public int                      level = 1;
+    public int                      objectCount = 0;
     public int                      startingLevel = 1;
     public float                    startingTime = 0f;
     public float                    endingTime = 0f;
@@ -29,10 +32,18 @@ public class ScoreManager : MonoBehaviour {
         S = this;
     }
 
+    private void FixedUpdate() {
+        // Set run time text
+        if (ObjectSpawner.S.isSpawning) {
+            runTimeText.text = "Time:<color=white> " + GetTime(Time.time);
+        }
+    }
+
     // Reset the user's score to default values
     public void ResetScore() {
         score = 0;
         level = startingLevel;
+        objectCount = 0;
         startingTime = 0f;
         endingTime = 0f;
         amountToNextLevel = 5;
@@ -59,6 +70,13 @@ public class ScoreManager : MonoBehaviour {
             // Display text of a random exclamation
             AnnouncerManager.S.DisplayRandomExclamation();
         }
+    }
+
+    // Amount of total objects spawned
+    public void AddToObjectCount(int amount = 1) {
+        objectCount += amount;
+
+        objectSpawnCountText.text = "Objects:<color=white> " + objectCount;
     }
 
     //
@@ -138,7 +156,7 @@ public class ScoreManager : MonoBehaviour {
 
     //
     public void UpdateGUI() {
-        scoreText.text = "Score: " + score;
-        levelText.text = "Level: " + level;
+        scoreText.text = "Score:<color=white> " + score;
+        levelText.text = "Level:<color=white> " + level;
     }
 }

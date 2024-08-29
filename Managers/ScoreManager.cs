@@ -44,7 +44,7 @@ public class ScoreManager : MonoBehaviour {
         score = 0;
         level = startingLevel;
         objectCount = 0;
-        startingTime = 0f;
+        startingTime = Time.time;
         endingTime = 0f;
         amountToNextLevel = 5;
 

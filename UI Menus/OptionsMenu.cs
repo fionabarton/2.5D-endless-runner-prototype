@@ -44,7 +44,7 @@ public class OptionsMenu : MonoBehaviour {
     }
 
     void OnStart() {
-        Invoke("GetPlayerPrefs", 0.1f);
+        GetPlayerPrefs();
 
         Deactivate();
     }

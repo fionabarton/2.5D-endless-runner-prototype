@@ -61,6 +61,9 @@ public class AnnouncerManager : MonoBehaviour {
         DisplayText(GetRandomInterjection() + "!", Color.red);
     }
     public void DisplayLetsGo() {
+        // Cancel all invoke calls
+        CancelInvoke();
+
         DisplayText("LET'S GO" + "!", ColorManager.S.alleyMaterial1.color, false);
 
         // Play SFX

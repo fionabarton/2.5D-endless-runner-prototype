@@ -56,6 +56,10 @@ public class AudioManager : MonoBehaviour {
     }
 
     void Start() {
+        Invoke("OnStart", 0.11f);
+    }
+
+    void OnStart() {
         // Start playing background music
         PlayBGM(eBGMAudioClipName.mainMenu);
     }
